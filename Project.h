@@ -11,6 +11,12 @@
 
 /**-------------------------------------------------------------------------------------------------------------------*/
 
+typedef struct key {
+    int size;
+    short *v;
+} KEY;
+
+KEY * init(void);
 /**
  * Generate a random integer to be used as the public key.
  * @return random number representing a public key
@@ -22,7 +28,7 @@ unsigned long long new_public_key_int(void);
 * @param key - long key
  * @return address of array of digits for a given key
  */
-short* key_long_2_digits_int(unsigned long long key);
+short* key_long_2_digits_int(unsigned long long key, int *size);
 
 /**
  * Receives an array of digits and returns the long key.
@@ -31,13 +37,15 @@ short* key_long_2_digits_int(unsigned long long key);
  */
 unsigned long long key_digits_2_long_int(short* keydigits);
 
-int verify_private_key(short *privkey);
+int verify_private_key(short *privkey, int *size);
 
-int descending(short *privkey);
+int descending(short *privkey, int *size);
 
-int ascending(short *privkey);
+int ascending(short *privkey, int *size);
 
-int countDistinct(short *privkey);
+int countDistinct(short *privkey, int *size);
+int init_size(unsigned long long key);
+
 
 /**
  * Calculate the bipolar private key from a given public key (returns the bipolar private key).
