@@ -12,8 +12,10 @@ int main_project(int argc, const char *argv[]) {
     //short **matrix_ints = alloc_matrix_int(NLINES, NCOLUMNS);
     //int *size = NULL;
     //key_long_2_digits_int(12345, size);
-    calc_private_key_int(2013);
-
+    //unsigned long long key = new_public_key_int();
+    //printf("%llu\n",key);
+    //calc_private_key_int(2013);
+    calc_runlength_int(211111111111);
     /**---------------------------------------------------------------------------------------------------------------*/
     char **matrix_chars = alloc_matrix_char(NLINES, NCOLUMNS);
     return 0;
@@ -23,48 +25,50 @@ int main_project(int argc, const char *argv[]) {
 
 unsigned long long new_public_key_int(void) {
     srand(time(NULL));
-    unsigned long long key = rand() % 10000 + 1;
+    unsigned long long key = rand() % 3000 + 1;
     return key;
 }
 
-short *key_long_2_digits_int(unsigned long long key, int *size) {
-    int mod = 0, mod1 = 0, n = 0;
+short *key_long_2_digits_int(unsigned long long key) {
+    unsigned long long mod = 0, mod1 = 0, n = 0;
+    int count = init_size(key);
 
+    short *key1 = (short *) malloc((count + 1) * sizeof(short));
 
-    short *key1 = (short *) malloc(*size * sizeof(short));
-
-    for (int i = 0; i < *size; i++) {
+    for (int i = 0; i < count; i++) {
         mod = key % 10;
         n = n * 10 + mod;
         key = key / 10;
     }
 
 
-    for (int i = 0; i < *size; i++) {
+    for (int i = 0; i < count; i++) {
         mod1 = n % 10;
         *(key1 + i) = mod1;
-
         n = n / 10;
     }
-    //printf("%d ",*size);
+    *(key1 + count + 1) = -1;
     return key1;
 }
 
 
 
-unsigned long long key_digits_2_long_int(short *keydigits) {
+unsigned long long key_digits_2_long_int(const short *keydigits) {
     unsigned long long key = 0;
-    short n = sizeof(keydigits) / sizeof(short);
-    for (int i = 0; i < n; i++) {
+
+    for (int i = 0; *(keydigits + i + 1) != -1; i++) {
+        if(*(keydigits + i) == -2){
+            i++;
+        }
         key = key * 10 + *(keydigits + i);
     }
     return key;
 }
 
-int verify_private_key(short *privkey, int *size) {
-    int count = countDistinct(privkey, size);
-    int a = ascending(privkey,size);
-    int d = descending(privkey,size);
+int verify_private_key(const short *privkey) {
+    int count = countDistinct(privkey);
+    int a = ascending(privkey);
+    int d = descending(privkey);
 
     if (count == 2 && a == 1 || count == 2 && d == 1) {
         return 1;
@@ -72,47 +76,43 @@ int verify_private_key(short *privkey, int *size) {
     return 0;
 }
 
-int descending(short *privkey, int *size) {
+int descending(const short *privkey) {
     int d = 1;
-    short n = sizeof(privkey) / sizeof(short);
 
-    for (int i = 0; i < *size-1; i++) {
-        if (*(privkey + i) < *(privkey + i + 1)) {
+    for (int i = 0; *(privkey + i + 2) != -1; i++) {
+        if (*(privkey + i) < *(privkey + i + 1) && *(privkey + i + 1) != -1) {
             d = 0;
         }
     }
     return d;
 }
 
-int ascending(short *privkey, int *size) {
+int ascending(const short *privkey) {
     int c = 1;
-    short n = sizeof(privkey) / sizeof(short);
 
-    for (int i = 0; i < *size-1; i++) {
-        if (*(privkey + i) > *(privkey + i + 1)) {
+    for (int i = 0; *(privkey + i + 2) != -1; i++) {
+        if (*(privkey + i) > *(privkey + i + 1) && *(privkey + i + 1) != -1) {
             c = 0;
         }
     }
     return c;
 }
 
-int countDistinct(short *privkey, int *size) {
+int countDistinct(const short *privkey) {
     int res = 1;
     int j = 0;
-    short n = sizeof(privkey) / sizeof(short);
 
-
-
-    for (int i = 1; i < *size; i++) {
+    for (int i = 1; *(privkey + i + 1) != -1 ; i++) {
 
         for (j = 0; j < i; j++)
 
-            if (*(privkey + i) == *(privkey + j))
+            if (*(privkey + i) == *(privkey + j) )
                 break;
 
         if (i == j)
             res++;
     }
+
     return res;
 }
 
@@ -128,22 +128,53 @@ int  init_size(unsigned long long key){
 
 unsigned long long calc_private_key_int(unsigned long long pubkey) {
     unsigned long long privkey = 0;
+    unsigned long long max = ULLONG_MAX;
     short *aux;
-    int *size = NULL;
-    int count = 0;
-    for (int i = 2; i < pubkey; i++) {
+    for (int i = 2; (privkey * i) < max/2; i++) {
         privkey = pubkey * i;
-        count = init_size(privkey);
-        size = &count;
-        aux = key_long_2_digits_int(privkey,size);
+        aux = key_long_2_digits_int(privkey);
 
-        if (verify_private_key(aux, size)) {
+        if (verify_private_key(aux) == 1) {
             break;
         }
     }
-    //printf("%d ",*size);
-    printf("%llu", privkey);
+    int count = init_size(privkey);
+    //printf("%d\n",count);
+   //printf("%llu", privkey);
     return privkey;
+}
+
+unsigned long long calc_runlength_int(unsigned long long privkey){
+    unsigned long long privkey_rle = 0;
+    int count = 1;
+    int j = 0;
+    short *aux = key_long_2_digits_int(privkey);
+    short *aux1 = (short*) malloc(7 * sizeof(short));
+    for(int  i = 0; *(aux + i + 1) != -1; i++){
+        if(*(aux + i) == *(aux +i + 1)){
+            count++;
+        }else{
+            if(count >= 10){
+                *(aux1 + j) = count / 10;
+                *(aux1 + j + 1) = count % 10;
+                *(aux1 + j + 2) = -2;
+                *(aux1 + j + 3) = *(aux + i);
+                j += 4;
+                count = 1;
+
+            }else{
+                *(aux1 + j) = count ;
+                *(aux1 + j + 1) = -2;
+                *(aux1 + j + 2) = *(aux + i);
+                j += 3;
+                count = 1;
+            }
+        }
+    }
+    *(aux1 + j + 1) = -1;
+    privkey_rle = key_digits_2_long_int(aux1);
+    printf("%llu",privkey_rle);
+    return privkey_rle;
 }
 
 short **alloc_matrix_int(int nlines, int ncolumns) {

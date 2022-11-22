@@ -11,12 +11,6 @@
 
 /**-------------------------------------------------------------------------------------------------------------------*/
 
-typedef struct key {
-    int size;
-    short *v;
-} KEY;
-
-KEY * init(void);
 /**
  * Generate a random integer to be used as the public key.
  * @return random number representing a public key
@@ -28,22 +22,23 @@ unsigned long long new_public_key_int(void);
 * @param key - long key
  * @return address of array of digits for a given key
  */
-short* key_long_2_digits_int(unsigned long long key, int *size);
+short* key_long_2_digits_int(unsigned long long key);
 
 /**
  * Receives an array of digits and returns the long key.
  * @param keydigits - array of digits of key
  * @return address of array of digits for a given key
  */
-unsigned long long key_digits_2_long_int(short* keydigits);
+unsigned long long key_digits_2_long_int(const short* keydigits);
 
-int verify_private_key(short *privkey, int *size);
+int verify_private_key(const short *privkey);
 
-int descending(short *privkey, int *size);
+int descending(const short *privkey);
 
-int ascending(short *privkey, int *size);
+int ascending(const short *privkey);
 
-int countDistinct(short *privkey, int *size);
+int countDistinct(const short *privkey);
+
 int init_size(unsigned long long key);
 
 
