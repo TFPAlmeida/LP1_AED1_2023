@@ -29,15 +29,15 @@ short* key_long_2_digits_int(unsigned long long key);
  * @param keydigits - array of digits of key
  * @return address of array of digits for a given key
  */
-unsigned long long key_digits_2_long_int(const short* keydigits);
+unsigned long long key_digits_2_long_int(short* keydigits);
 
-int verify_private_key(const short *privkey);
+int verify_private_key(const short *privtkey);
 
-int descending(const short *privkey);
+int descending(const short *privtkey);
 
-int ascending(const short *privkey);
+int ascending(const short *privtkey);
 
-int countDistinct(const short *privkey);
+int countDistinct(const short *privtkey);
 
 int init_size(unsigned long long key);
 
@@ -54,7 +54,9 @@ unsigned long long calc_private_key_int(unsigned long long pubkey);
  * @param privkey - private key for which to calculate the run-length
  * @return run-length number representing the private key
  */
-unsigned long long calc_runlength_int(unsigned long long privkey);
+unsigned long long calc_runlength_int(unsigned long long privtkey);
+
+unsigned long long concatenar_key(int aux, short key, unsigned long long privtkey);
 
 /**
  * Calculate the private key from a run-length.
