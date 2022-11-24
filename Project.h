@@ -81,6 +81,8 @@ short** alloc_matrix_int(int nlines, int ncolumns);
  */
 void store_key_int(short **matrix, int lines, unsigned long long key);
 
+void print_key_int(short **matrix, int lines);
+
 /**
  * Verify if a given key exists in the matrix.
  * @param matrix - matrix with keys

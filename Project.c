@@ -4,27 +4,38 @@
 
 #include "Project.h"
 
-#define NLINES 10
-#define NCOLUMNS 10
+#define NLINES 12
+#define NCOLUMNS 200
 
 int main_project(int argc, const char *argv[]) {
-    int i = 0;
+int i = 0;
+    //srand(time(NULL));
     short **matrix_pubs = alloc_matrix_int(NLINES, NCOLUMNS);
     short **matrix_privs = alloc_matrix_int(NLINES, NCOLUMNS);
     short **matrix_rle = alloc_matrix_int(NLINES, NCOLUMNS);
-    while(i < NLINES){
-        unsigned long long key2 = new_public_key_int();
-        printf("%llu\n",key2);
-        unsigned long long privtkey = calc_private_key_int(key2);
+    for(i = 0; i < 12; i++){
+        unsigned long long pubkey = new_public_key_int();
+        //printf("%llu\n",key2);
+        store_key_int(matrix_pubs, i,pubkey);
+        unsigned long long privtkey = calc_private_key_int(pubkey);
+        store_key_int(matrix_privs, i, privtkey);
         unsigned long long rle = calc_runlength_int(privtkey);
-        printf("%llu = ", rle);
-        unsigned long long key = private_key_from_runlength_int(rle);
-        printf("%llu\n", key);
-        i++;
+        store_key_int(matrix_rle, i,rle);
+        //printf("%llu = ", rle);
+        //unsigned long long key = private_key_from_runlength_int(rle);
+        //printf("%llu\n", key);
+        //printf("%d ",i);
     }
 
+
+    print_key_int(matrix_pubs, i);
+    printf("\n");
+    print_key_int(matrix_privs, i);
+    printf("\n");
+    print_key_int(matrix_rle, i);
+
     /**---------------------------------------------------------------------------------------------------------------*/
-    char **matrix_chars = alloc_matrix_char(NLINES, NCOLUMNS);
+    //char **matrix_chars = alloc_matrix_char(NLINES, NCOLUMNS);
     return 0;
 }
 
@@ -49,12 +60,6 @@ short *key_long_2_digits_int(unsigned long long key) {
         j--;
     }
     *(key1 + count) = -1;
-    /*for(int i = 0; i < count + 1; i++){
-        printf("%d ", *(key1 + i));
-    }*/
-
-
-
 
     return key1;
 }
@@ -245,16 +250,40 @@ unsigned long long concatenar_key(int aux, short key, unsigned long long privtke
 
 short **alloc_matrix_int(int nlines, int ncolumns) {
 
-    short **matrix = (short **) malloc(nlines * sizeof(short *));
+    short **matrix = (short **) calloc(ncolumns , sizeof(short *));
     for (int i = 0; i < nlines; i++) {
-        *(matrix + i) = (short *) malloc(NCOLUMNS * sizeof(short));
+        *(matrix + i) = (short *) calloc(nlines , sizeof(short));
     }
     return matrix;
 }
 
 void store_key_int(short **matrix, int lines, unsigned long long key) {
+    int count = init_size(key);
+    short *key_matrix = key_long_2_digits_int(key);
+
+
+        *(*(matrix + count) + lines) = -1;
+
+
+    for (int i = 0; i < count; i++) {
+        *(*(matrix + i) + lines) = *(key_matrix + i);
+        //printf("%d ",*(*(matrix + i) + lines));
+    }
+    //printf("%d ",*(*(matrix + count) + lines));
+    //printf("\n");
 
 }
+
+void print_key_int(short **matrix, int lines){
+    for(int i = 0; i < lines; i++){
+        for(int n = 0; *(*(matrix + n) + i) != -1; n++){
+            printf("%d ", *(*(matrix + n) + i));
+        }
+        printf("\n");
+    }
+}
+
+
 
 /**-------------------------------------------------------------------------------------------------------------------*/
 
