@@ -29,7 +29,7 @@ short* key_long_2_digits_int(unsigned long long key);
  * @param keydigits - array of digits of key
  * @return address of array of digits for a given key
  */
-unsigned long long key_digits_2_long_int(short* keydigits);
+unsigned long long key_digits_2_long_int(const short* keydigits);
 
 int verify_private_key(const short *privtkey);
 
@@ -92,6 +92,8 @@ void print_key_int(short **matrix, int lines);
  */
 int exists_key_int(short **matrix, int lines, unsigned long long key);
 
+int find_key_int(short **matrix, int lines, unsigned long long key);
+
 /**
  * Returns the private key corresponding to the given public key
  * @param matrix_kpub - public keys matrix
@@ -129,6 +131,8 @@ unsigned long long delete_key_int(short **matrix_kpub, short **matrix_kpriv, sho
  * @param lines - matrix number of lines
  */
 void bulk_populate_public_keys_int(short **matrix_kpub, int lines);
+
+short* array_key(short **matrix, int i);
 
 /**
  * Automatically calculate, generate and store all private keys for the existing public keys.

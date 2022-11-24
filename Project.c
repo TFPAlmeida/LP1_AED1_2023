@@ -4,44 +4,44 @@
 
 #include "Project.h"
 
-#define NLINES 12
-#define NCOLUMNS 200
+#define NLINES 10
+#define NCOLUMNS 20
 
 int main_project(int argc, const char *argv[]) {
-int i = 0;
+
+    /**---------------------------------------------------------------------------------------------------------------*/
     //srand(time(NULL));
     short **matrix_pubs = alloc_matrix_int(NLINES, NCOLUMNS);
     short **matrix_privs = alloc_matrix_int(NLINES, NCOLUMNS);
     short **matrix_rle = alloc_matrix_int(NLINES, NCOLUMNS);
-    for(i = 0; i < 12; i++){
-        unsigned long long pubkey = new_public_key_int();
-        //printf("%llu\n",key2);
-        store_key_int(matrix_pubs, i,pubkey);
-        unsigned long long privtkey = calc_private_key_int(pubkey);
-        store_key_int(matrix_privs, i, privtkey);
-        unsigned long long rle = calc_runlength_int(privtkey);
-        store_key_int(matrix_rle, i,rle);
-        //printf("%llu = ", rle);
-        //unsigned long long key = private_key_from_runlength_int(rle);
-        //printf("%llu\n", key);
-        //printf("%d ",i);
-    }
 
+    bulk_populate_public_keys_int(matrix_pubs, NLINES);
+    bulk_compute_private_keys_int(matrix_pubs, matrix_privs, NLINES);
+    bulk_compute_runlengths_int(matrix_privs, matrix_rle, NLINES);
 
-    print_key_int(matrix_pubs, i);
+    //unsigned long long key = private_key_from_runlength_int(rle);
+    //printf("%llu\n", key);
+    //printf("%d ",i);
+
+    //delete_key_int(matrix_pubs, matrix_privs, matrix_rle, i, 335);
+    //delete_key_int(matrix_pubs, matrix_privs, matrix_rle, i, 468);
+
+    print_key_int(matrix_pubs, NLINES);
     printf("\n");
-    print_key_int(matrix_privs, i);
+    print_key_int(matrix_privs, NLINES);
     printf("\n");
-    print_key_int(matrix_rle, i);
+    print_key_int(matrix_rle, NLINES);
+    printf("\n");
 
     /**---------------------------------------------------------------------------------------------------------------*/
     //char **matrix_chars = alloc_matrix_char(NLINES, NCOLUMNS);
+    /**---------------------------------------------------------------------------------------------------------------*/
     return 0;
 }
 
 
 unsigned long long new_public_key_int(void) {
-    //srand(time(NULL));
+
     unsigned long long key = rand() % 3000 + 1;
     return key;
 }
@@ -52,6 +52,7 @@ short *key_long_2_digits_int(unsigned long long key) {
     short *aux = (short *) malloc((count) * sizeof(short));
     short *key1 = (short *) malloc((count + 1) * sizeof(short));
     int j = count - 1;
+
     for (int i = 0; i < count; i++) {
         mod = key % 10;
         *(aux + i) = mod;
@@ -65,11 +66,10 @@ short *key_long_2_digits_int(unsigned long long key) {
 }
 
 
-unsigned long long key_digits_2_long_int(short *keydigits) {
+unsigned long long key_digits_2_long_int(const short *keydigits) {
     unsigned long long key = 0;
 
-    for (int i = 0; *(keydigits + i + 1) != -1; i++) {
-        //printf("%llu ",*(keydigits + i));
+    for (int i = 0; *(keydigits + i) != -1; i++) {
         key = key * 10 + *(keydigits + i);
     }
     return key;
@@ -109,8 +109,7 @@ int ascending(const short *privtkey) {
 }
 
 int countDistinct(const short *privkey) {
-    int res = 1;
-    int j = 0;
+    int res = 1, j = 0;
 
     for (int i = 1; *(privkey + i) != -1; i++) {
 
@@ -129,6 +128,7 @@ int countDistinct(const short *privkey) {
 int init_size(unsigned long long key) {
     int count = 0;
     unsigned long long aux = key;
+
     while (aux != 0) {
         aux = aux / 10;
         count++;
@@ -139,7 +139,8 @@ int init_size(unsigned long long key) {
 unsigned long long calc_private_key_int(unsigned long long pubkey) {
     unsigned long long privkey = 0;
     unsigned long long max = ULLONG_MAX;
-    short *aux;
+    short *aux = NULL;
+
     for (int i = 2; (privkey * i) < max / 2; i++) {
         privkey = pubkey * i;
         aux = key_long_2_digits_int(privkey);
@@ -157,9 +158,9 @@ unsigned long long calc_runlength_int(unsigned long long privtkey) {
     unsigned long long privtkey_rle = 0;
     int count = 1;
     int j = 0;
-    short aux3 = 0;
     short *aux = key_long_2_digits_int(privtkey);
     short *aux1 = (short *) malloc(7 * sizeof(short));
+
     for (int i = 0; *(aux + i) != -1; i++) {
         if (*(aux + i) == *(aux + i + 1)) {
             count++;
@@ -190,6 +191,7 @@ unsigned long long private_key_from_runlength_int(unsigned long long runlengthke
     int count = init_size(runlengthkey);
     int aux1 = 0, aux2 = 0;
     short *array = key_long_2_digits_int(runlengthkey);
+
     switch (count) {
         case 4:
             aux1 = *(array + 0);
@@ -233,6 +235,7 @@ unsigned long long private_key_from_runlength_int(unsigned long long runlengthke
 
 unsigned long long concatenar_key(int aux, short key, unsigned long long privtkey) {
     unsigned long long a = 1;
+
     if (key == 0) {
         for (int i = 0; i < aux; i++) {
             a *= 10;
@@ -249,10 +252,10 @@ unsigned long long concatenar_key(int aux, short key, unsigned long long privtke
 
 
 short **alloc_matrix_int(int nlines, int ncolumns) {
+    short **matrix = (short **) calloc(ncolumns * 2, sizeof(short *));
 
-    short **matrix = (short **) calloc(ncolumns , sizeof(short *));
-    for (int i = 0; i < nlines; i++) {
-        *(matrix + i) = (short *) calloc(nlines , sizeof(short));
+    for (int i = 0; i < nlines * 2; i++) {
+        *(matrix + i) = (short *) calloc(nlines * 2, sizeof(short));
     }
     return matrix;
 }
@@ -261,29 +264,146 @@ void store_key_int(short **matrix, int lines, unsigned long long key) {
     int count = init_size(key);
     short *key_matrix = key_long_2_digits_int(key);
 
-
-        *(*(matrix + count) + lines) = -1;
-
-
+    *(*(matrix + count) + lines) = -1;
     for (int i = 0; i < count; i++) {
         *(*(matrix + i) + lines) = *(key_matrix + i);
-        //printf("%d ",*(*(matrix + i) + lines));
     }
-    //printf("%d ",*(*(matrix + count) + lines));
-    //printf("\n");
-
 }
 
-void print_key_int(short **matrix, int lines){
-    for(int i = 0; i < lines; i++){
-        for(int n = 0; *(*(matrix + n) + i) != -1; n++){
+void print_key_int(short **matrix, int lines) {
+
+    for (int i = 0; i < lines; i++) {
+        for (int n = 0; *(*(matrix + n) + i) != -1; n++) {
             printf("%d ", *(*(matrix + n) + i));
         }
-        printf("\n");
+        if(*(*(matrix + 0) + i) != -1){
+            printf("\n");
+        }
     }
 }
 
+int exists_key_int(short **matrix, int lines, unsigned long long key) {
+    short *key_matrix = key_long_2_digits_int(key);
+    int count = 0, n = 0;
+    for (int i = 0; i < lines; i++) {
+        for (n = 0; *(key_matrix + n) != -1; n++) {
+            if (*(*(matrix + n) + i) == *(key_matrix + n)) {
+                count++;
+            } else {
+                count = 0;
+                break;
+            }
+        }
+        if (n == count && n != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
+int find_key_int(short **matrix, int lines, unsigned long long key) {
+    short *key_matrix = key_long_2_digits_int(key);
+    int count = 0, n = 0;
+
+    for (int i = 1; i <= lines; i++) {
+        for (n = 0; *(*(matrix + n) + i) != -1; n++) {
+            if (*(*(matrix + n) + i) == *(key_matrix + n)) {
+                count++;
+            } else {
+                count = 0;
+                break;
+            }
+        }
+        if (n == count && n != 0) {
+            return i;
+        }
+    }
+    return 0;
+}
+
+unsigned long long get_private_key_int(short **matrix_kpub, short **matrix_kpriv, int lines, unsigned long long pubkey) {
+    int h1 = exists_key_int(matrix_kpub, lines, pubkey);
+    unsigned long long privkey = calc_private_key_int(pubkey);
+    int h2 = exists_key_int(matrix_kpriv, lines, privkey);
+
+    if (h1 == 1 && h2 == 1) {
+        return privkey;
+    }
+    return 0;
+}
+
+unsigned long long get_runlength_int(short **matrix_kpriv, short **matrix_kcod, int lines, unsigned long long privkey) {
+    int h1 = exists_key_int(matrix_kpriv, lines, privkey);
+    unsigned long long codkey = calc_runlength_int(privkey);
+    int h2 = exists_key_int(matrix_kcod, lines, codkey);
+
+    if (h1 == 1 && h2 == 1) {
+        return codkey;
+    }
+    return 0;
+}
+
+unsigned long long delete_key_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, short pubkey) {
+    int h1 = exists_key_int(matrix_kpub, lines, pubkey);
+    unsigned long long privkey = calc_private_key_int(pubkey);
+    int h2 = exists_key_int(matrix_kpriv, lines, privkey);
+    unsigned long long codkey = calc_runlength_int(privkey);
+    int h3 = exists_key_int(matrix_kcod, lines, codkey);
+    int i = 0, n = 0, j = 0, k = 0;
+
+    if (h1 == 1) {
+        i = find_key_int(matrix_kpub, lines, pubkey);
+        *(*(matrix_kpub + k) + i) = -1;
+    }
+    if (h2 == 1) {
+        n = find_key_int(matrix_kpriv, lines, privkey);
+        *(*(matrix_kpriv + k) + n) = -1;
+    }
+    if (h3 == 1) {
+        j = find_key_int(matrix_kcod, lines, codkey);
+        *(*(matrix_kcod + k) + j) = -1;
+    }
+
+    return pubkey;
+}
+
+void bulk_populate_public_keys_int(short **matrix_kpub, int lines){
+
+    for(int i = 0; i < lines; i++){
+        unsigned long long pubkey = new_public_key_int();
+        store_key_int(matrix_kpub, i, pubkey);
+    }
+}
+
+short* array_key(short **matrix, int i){
+    int n = 0;
+    short *key = (short*) malloc(20 * sizeof(short));
+    for(n = 0; *(*(matrix + n) + i) != -1; n++){
+        *(key + n) = *(*(matrix + n) + i);
+    }
+    *(key + n) = -1;
+    return key;
+}
+
+void bulk_compute_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int lines){
+    short *key = NULL;
+    for(int i = 0; i < lines; i++){
+        key = array_key(matrix_kpub, i);
+        unsigned long long pubkey = key_digits_2_long_int(key);
+        unsigned long long privtkey = calc_private_key_int(pubkey);
+        store_key_int(matrix_kpriv, i, privtkey);
+    }
+}
+
+void bulk_compute_runlengths_int(short **matrix_kpriv, short **matrix_kcod, int lines){
+    short *key = NULL;
+    for(int i = 0; i < lines; i++){
+        key = array_key(matrix_kpriv, i);
+        unsigned long long privkey = key_digits_2_long_int(key);
+        unsigned long long rlekey = calc_runlength_int(privkey);
+        store_key_int(matrix_kcod, i, rlekey);
+    }
+}
 
 /**-------------------------------------------------------------------------------------------------------------------*/
 
