@@ -159,7 +159,7 @@ void bulk_compute_runlengths_int(short **matrix_kpriv, short **matrix_kcod, int 
  * @return array of private keys matching the partialpubkey
  */
 short** search_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int lines, unsigned long long partialpubkey);
-
+void copy_matrix(short **matrix, short **aux, int lines ,const int *id);
 /**
  * Sort a matrix keys in ascending or descending order
  * @param matrix - matrix to be sorted
@@ -168,6 +168,8 @@ short** search_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int l
  */
 void sort_matrix_int(short **matrix, int lines, int order);
 
+void merge(unsigned long long *key, int *id, int l, int m, int r);
+void mergeSort(unsigned long long *key, int *id, int l, int r);
 /**
  * Sort all matrices keys in ascending or descending order
  * @param matrix_kpub - public keys matrix
