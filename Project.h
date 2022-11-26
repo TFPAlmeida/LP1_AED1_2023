@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
+#include <string.h>
 /**-------------------------------------------------------------------------------------------------------------------*/
 
 /**
@@ -168,8 +168,8 @@ void copy_matrix(short **matrix, short **aux, int lines ,const int *id);
  */
 void sort_matrix_int(short **matrix, int lines, int order);
 
-void merge(unsigned long long *key, int *id, int l, int m, int r);
-void mergeSort(unsigned long long *key, int *id, int l, int r);
+void merge(unsigned long long *key, int *id, int l, int m, int r, int order);
+void mergeSort(unsigned long long *key, int *id, int l, int r, int orde);
 /**
  * Sort all matrices keys in ascending or descending order
  * @param matrix_kpub - public keys matrix

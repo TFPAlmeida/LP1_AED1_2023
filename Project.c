@@ -10,14 +10,16 @@
 int main_project(int argc, const char *argv[]) {
 
     /**---------------------------------------------------------------------------------------------------------------*/
-    //srand(time(NULL));
+
+    char file_INFO_TXT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT";
+    char file_LOAD_TXT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\Keys";
     short **matrix_pubs = alloc_matrix_int(NLINES, NCOLUMNS);
     short **matrix_privs = alloc_matrix_int(NLINES, NCOLUMNS);
     short **matrix_rle = alloc_matrix_int(NLINES, NCOLUMNS);
 
-    bulk_populate_public_keys_int(matrix_pubs, NLINES);
-    bulk_compute_private_keys_int(matrix_pubs, matrix_privs, NLINES);
-    bulk_compute_runlengths_int(matrix_privs, matrix_rle, NLINES);
+    //bulk_populate_public_keys_int(matrix_pubs, NLINES);
+    //bulk_compute_private_keys_int(matrix_pubs, matrix_privs, NLINES);
+    //bulk_compute_runlengths_int(matrix_privs, matrix_rle, NLINES);
 
     //unsigned long long key = private_key_from_runlength_int(rle);
     //printf("%llu\n", key);
@@ -25,17 +27,9 @@ int main_project(int argc, const char *argv[]) {
 
     //delete_key_int(matrix_pubs, matrix_privs, matrix_rle, i, 335);
     //delete_key_int(matrix_pubs, matrix_privs, matrix_rle, i, 468);
-
-
-    print_key_int(matrix_pubs, NLINES);
-    printf("\n");
-    print_key_int(matrix_privs, NLINES);
-    printf("\n");
-    sort_matrix_int(matrix_privs, NLINES, 0);
-    print_key_int(matrix_privs, NLINES);
-    //print_key_int(matrix_rle, NLINES);
-    //printf("\n");
-
+    load_txt_keys_int(matrix_pubs, matrix_privs, matrix_rle, NLINES, file_LOAD_TXT);
+    list_keys_int(matrix_pubs, matrix_privs, matrix_rle, NLINES, 1);
+    save_txt_keys_int(matrix_pubs, matrix_privs, matrix_rle, NLINES, file_INFO_TXT);
     /**---------------------------------------------------------------------------------------------------------------*/
     //char **matrix_chars = alloc_matrix_char(NLINES, NCOLUMNS);
     /**---------------------------------------------------------------------------------------------------------------*/
@@ -444,11 +438,10 @@ void sort_matrix_int(short **matrix, int lines, int order) {
     int *id = (int *) malloc(lines * sizeof(int));
     unsigned long long *key = array_key_v2(matrix, id, lines);
     short **aux = alloc_matrix_int(NLINES, NCOLUMNS);
-    mergeSort(key, id, 0, lines - 1);
+    mergeSort(key, id, 0, lines - 1, order);
     int n = 0;
     for(int i = 0; i < lines; i++){
         copy_matrix(matrix, aux, lines, id);
-
     }
 
     for (int i = 0; i < lines; i++) {
@@ -462,54 +455,234 @@ void sort_matrix_int(short **matrix, int lines, int order) {
 }
 
 
-void merge( unsigned long long *key, int *id, int mid, int low, int high) {
+void merge( unsigned long long *key, int *id, int mid, int low, int high, int order) {
     int i, j, k;
     unsigned long long B[100];
     int A[100];
     i = low;
     j = mid + 1;
     k = low;
+ if(order ==1){
+     while (i <= mid && j <= high) {
+         if (*(key + i) < *(key + j)) {
+             B[k] = *(key + i);
+             A[k] = *(id + i);
+             i++;
+             k++;
+         } else {
+             B[k] = *(key + j);
+             A[k] = *(id + j);
+             j++;
+             k++;
+         }
+     }
+     while (i <= mid) {
+         B[k] = *(key + i);
+         A[k] = *(id + i);
+         k++;
+         i++;
+     }
+     while (j <= high) {
+         B[k] = *(key + j);
+         A[k] = *(id + j);
+         k++;
+         j++;
+     }
+     for (i = low; i <= high; i++) {
+         *(key +i) = B[i];
+         *(id + i) = A[i];
+     }
+ }else{
+     while (i <= mid && j <= high) {
+         if (*(key + i) > *(key + j)) {
+             B[k] = *(key + i);
+             A[k] = *(id + i);
+             i++;
+             k++;
+         } else {
+             B[k] = *(key + j);
+             A[k] = *(id + j);
+             j++;
+             k++;
+         }
+     }
+     while (i <= mid) {
+         B[k] = *(key + i);
+         A[k] = *(id + i);
+         k++;
+         i++;
+     }
+     while (j <= high) {
+         B[k] = *(key + j);
+         A[k] = *(id + j);
+         k++;
+         j++;
+     }
+     for (i = low; i <= high; i++) {
+         *(key +i) = B[i];
+         *(id + i) = A[i];
+     }
+ }
 
-    while (i <= mid && j <= high) {
-        if (*(key + i) < *(key + j)) {
-            B[k] = *(key + i);
-            A[k] = *(id + i);
-            i++;
-            k++;
-        } else {
-            B[k] = *(key + j);
-            A[k] = *(id + j);
-            j++;
-            k++;
+
+}
+
+void mergeSort(unsigned long long *key, int *id, int low, int high, int order) {
+    int mid;
+    if (low < high) {
+        mid = (low + high) / 2;
+        mergeSort(key, id, low, mid, order);
+        mergeSort(key, id, mid + 1, high, order);
+        merge(key, id, mid, low, high, order);
+    }
+}
+
+void sort_all_matrices_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, int order){
+    sort_matrix_int(matrix_kpub, lines, order);
+    sort_matrix_int(matrix_kpriv, lines, order);
+    sort_matrix_int(matrix_kcod, lines, order);
+}
+
+void list_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, int order){
+    sort_all_matrices_int(matrix_kpub, matrix_kpriv, matrix_kcod, lines, order);
+    printf("------------------------------------------------------------------\n");
+    print_key_int(matrix_kpub, lines);
+    printf("\n");
+    printf("------------------------------------------------------------------\n");
+    printf("\n");
+    print_key_int(matrix_kpriv, lines);
+    printf("\n");
+    printf("------------------------------------------------------------------\n");
+    printf("\n");
+    print_key_int(matrix_kcod, lines);
+    printf("\n");
+}
+
+void save_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, char filename[]){
+    FILE *arquivoINFO = NULL;
+
+    if ((arquivoINFO = fopen(filename, "w")) == NULL) {
+        fprintf(stdout, "ERRO\n");
+        return;
+    }
+
+    for(int i = 0; i < lines; i++){
+        for(int n = 0; *(*(matrix_kpub + n) + i) != -1; n++){
+            fprintf(arquivoINFO, "%d ", *(*(matrix_kpub + n) + i));
         }
+        fprintf(arquivoINFO, "\n ");
     }
-    while (i <= mid) {
-        B[k] = *(key + i);
-        A[k] = *(id + i);
-        k++;
-        i++;
+
+    fprintf(arquivoINFO, "/*------------------------------------------*/\n");
+    fprintf(arquivoINFO, "\n ");
+
+    for(int i = 0; i < lines; i++){
+        for(int n = 0; *(*(matrix_kpriv + n) + i) != -1; n++){
+            fprintf(arquivoINFO, "%d ", *(*(matrix_kpriv + n) + i));
+        }
+        fprintf(arquivoINFO, "\n ");
     }
-    while (j <= high) {
-        B[k] = *(key + j);
-        A[k] = *(id + j);
-        k++;
-        j++;
-    }
-    for (i = low; i <= high; i++) {
-        *(key +i) = B[i];
-        *(id + i) = A[i];
+
+    fprintf(arquivoINFO, "/*------------------------------------------*/\n");
+    fprintf(arquivoINFO, "\n ");
+
+    for(int i = 0; i < lines; i++){
+        for(int n = 0; *(*(matrix_kcod + n) + i) != -1; n++){
+            fprintf(arquivoINFO, "%d ", *(*(matrix_kcod + n) + i));
+        }
+        fprintf(arquivoINFO, "\n ");
     }
 
 }
 
-void mergeSort(unsigned long long *key, int *id, int low, int high) {
-    int mid;
-    if (low < high) {
-        mid = (low + high) / 2;
-        mergeSort(key, id, low, mid);
-        mergeSort(key, id, mid + 1, high);
-        merge(key, id, mid, low, high);
+int tamanho_do_ficheiro_1_(char nameficheiro[]) {
+    int count = 0;
+    FILE *fp;
+    fp = fopen(nameficheiro, "r");
+
+    if (fp == NULL) {
+        perror("Nao foi possivel ler o ficheiro!\n");
     }
+
+    char c;
+
+    while ((c = fgetc(fp)) != EOF) {
+        if (c == '\n') {
+            count++;
+        }
+    }
+    fclose(fp);
+
+    return count;
+}
+
+
+void load_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix_kcod, int lines, char filename[]){
+    FILE *arquivoINFO;
+
+    if ((arquivoINFO = fopen(filename, "r")) == NULL) {
+        fprintf(stdout, "ERRO\n");
+        return;
+    }
+    char aux[100];
+    char *result;
+    int i = 1, x = 0, y = 0, z = 0, n1 = 0, n2 = 0, n3 = 0, k = 0;
+    while (!feof(arquivoINFO)){
+
+// Lê uma linha (inclusive com o '\n')
+        fgets(aux, 100, arquivoINFO);  // o 'fgets' lê até 99 caracteres ou até o '\n'
+        if(i == 1){
+            n1 = atoi(aux);
+            printf("n1:%d\n",n1);
+        }else if (i == n1 + 2){
+            n2 = atoi(aux);
+            printf("n2:%d\n",n2);
+        }else if(i == n1 + n2 + 3){
+            n3 = atoi(aux);
+            printf("n3:%d\n",n3);
+        }
+
+        if(i <=  n1 + 1 && i != 1){
+            unsigned long long key = atoi(aux);
+            short *arr = key_long_2_digits_int(key);
+            for(k = 0; *(arr+ k) != -1; k++){
+                *(*(matrix_kpub + k) + x) = *(arr + k);
+            }
+            *(*(matrix_kpub + k) + x) = -1;
+            x++;
+            strcpy(aux,"");
+        }else if(i <= n1 + n2 + 2 && i != 1 && i != n1 + 2){
+
+            unsigned long long key = atoi(aux);
+            short *arr = key_long_2_digits_int(key);
+            for(k = 0; *(arr+ k) != -1; k++){
+                *(*(matrix_kpriv + k) + y) = *(arr + k);
+            }
+            *(*(matrix_kpriv + k) + y) = -1;
+            y++;
+        }else if(i <= n1 + n2 + n3 + 3 && i != 1 && i != n1 + n2 + 3 && i != n1 + 2){
+            unsigned long long key = atoi(aux);
+            short *arr = key_long_2_digits_int(key);
+            for(k = 0; *(arr+ k) != -1; k++){
+                *(*(matrix_kcod + k) + z) = *(arr + k);
+            }
+            *(*(matrix_kcod + k) + z) = -1;
+            z++;
+        }
+        i++;
+
+    }
+
+    for(int w = 0; w < 5;w++){
+        for(int t = 0; *(*(matrix_kpub + t) +w) != -1; t++){
+            printf("%d ",*(*(matrix_kpub + t) +w));
+        }
+        printf("\n");
+    }
+    printf("\n");
+
+    //print_key_int(matrix_kpriv, 5);
+
 }
 
 /**-------------------------------------------------------------------------------------------------------------------*/
