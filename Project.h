@@ -321,7 +321,10 @@ unsigned long long get_runlength_char(char **matrix_kpriv, char **matrix_kcod, i
  * @param pubkey - public key to delete
  * @return pubkey that was deleted
  */
-unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char pubkey);
+
+int find_key_char(char **matrix, int lines, unsigned long long key);
+void print_key_char(char **matrix, int lines);
+        unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, unsigned long long pubkey);
 
 /**
  * Automatically generate and save a given amount (<lines>) of public keys.
@@ -329,6 +332,8 @@ unsigned long long delete_key_char(char **matrix_kpub, char **matrix_kpriv, char
  * @param lines - matrix number of lines
  */
 void bulk_populate_public_keys_char(char **matrix_kpub, int lines);
+
+char *array_key_char(char **matrix, int i);
 
 /**
  * Automatically calculate, generate and store all private keys for the existing public keys.
@@ -355,6 +360,10 @@ void bulk_compute_runlengths_char(char **matrix_kpriv, char **matrix_kcod, int l
  * @return array of private keys matching the partialpubkey
  */
 char** search_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lines, unsigned long long partialpubkey);
+
+unsigned long long *array_key_char_v2(char **matrix, int *id, int lines);
+
+void copy_matrix_char(char **matrix, char **aux, int lines, const int *id);
 
 /**
  * Sort a matrix keys in ascending or descending order
@@ -393,7 +402,7 @@ void list_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod,
  * @param filename - name of the text file where to store the data
  */
 void save_txt_keys_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, char filename[]);
-
+int lines_matriz(char filename[]);
 /**
  * Loads data into the matrices from a text file.
  * @param matrix_kpub - public keys matrix
