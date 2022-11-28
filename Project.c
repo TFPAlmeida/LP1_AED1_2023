@@ -276,7 +276,7 @@ unsigned long long concatenar_key(int aux, short key, unsigned long long privtke
 
 
 short **alloc_matrix_int(int nlines, int ncolumns) {
-    short **matrix = (short **) malloc(nlines * ncolumns * sizeof(short *));
+    short **matrix = (short **) malloc(nlines * sizeof(short *));
 
     for (int i = 0; i < nlines; i++) {
         *(matrix + i) = (short *) malloc(ncolumns * sizeof(short));
@@ -721,7 +721,7 @@ unsigned long long private_key_from_runlength_char(unsigned long long runlengthk
 }
 
 char **alloc_matrix_char(int nlines, int ncolumns) {
-    char **matrix = (char **) malloc(nlines * ncolumns * sizeof(char *));
+    char **matrix = (char **) malloc(nlines * sizeof(char *));
 
     for (int i = 0; i < nlines; i++) {
         *(matrix + i) = (char *) malloc(ncolumns * sizeof(char));
