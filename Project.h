@@ -11,6 +11,8 @@
 #include <string.h>
 
 typedef struct key_holder{
+    int lines;
+    int columns = 21;
     short **matrix_kpub_int;
     short **matrix_kpriv_int;
     short **matrix_kcod_int;
