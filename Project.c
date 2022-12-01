@@ -9,15 +9,15 @@
 
 int main_project(int argc, const char *argv[]) {
 
-    /**---------------------------------------------------------------------------------------------------------------*/
-    int lines = 8;
+    /**--------------------------------------------------------------------------------------------------------------**/
+    //int lines = 8;
 
-    char file_INFO_TXT_INT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_INT";
-    char file_LOAD_TXT_INT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\KEYS_INT";
+    //char file_INFO_TXT_INT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_INT";
+    //char file_LOAD_TXT_INT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\KEYS_INT";
 
-    short **matrix_pubs_int = alloc_matrix_int(NLINES, NCOLUMNS);
-    short **matrix_priv_int = alloc_matrix_int(NLINES, NCOLUMNS);
-    short **matrix_rle_int = alloc_matrix_int(NLINES, NCOLUMNS);
+    //short **matrix_pubs_int = alloc_matrix_int(NLINES, NCOLUMNS);
+    //short **matrix_priv_int = alloc_matrix_int(NLINES, NCOLUMNS);
+    //short **matrix_rle_int = alloc_matrix_int(NLINES, NCOLUMNS);
 
     //bulk_populate_public_keys_int(matrix_pubs_int, lines);
     //bulk_compute_private_keys_int(matrix_pubs_int, matrix_priv_int, lines);
@@ -25,11 +25,11 @@ int main_project(int argc, const char *argv[]) {
 
     //delete_key_int(matrix_pubs_int, matrix_priv_int, matrix_rle_int, lines, 335);
     //delete_key_int(matrix_pubs_int, matrix_priv_int, matrix_rle_int, lines, 468);
-    int n1 = lines_matriz(file_LOAD_TXT_INT);
-    lines = n1;
-    load_txt_keys_int(matrix_pubs_int, matrix_priv_int, matrix_rle_int, lines, file_LOAD_TXT_INT);
-    list_keys_int(matrix_pubs_int, matrix_priv_int, matrix_rle_int, lines, 1);
-    save_txt_keys_int(matrix_pubs_int, matrix_priv_int, matrix_rle_int, lines, file_INFO_TXT_INT);
+    //int n1 = lines_matriz(file_LOAD_TXT_INT);
+    //lines = n1;
+    //load_txt_keys_int(matrix_pubs_int, matrix_priv_int, matrix_rle_int, lines, file_LOAD_TXT_INT);
+    //list_keys_int(matrix_pubs_int, matrix_priv_int, matrix_rle_int, lines, 1);
+    //save_txt_keys_int(matrix_pubs_int, matrix_priv_int, matrix_rle_int, lines, file_INFO_TXT_INT);
     /**---------------------------------------------------------------------------------------------------------------*/
     /*char file_INFO_TXT_CHAR[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_CHAR";
     char file_LOAD_TXT_CHAR[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\KEYS_CHAR";
@@ -66,7 +66,7 @@ int lines_matriz(char filename[]){
 
 unsigned long long new_public_key_int(void) {
 
-    unsigned long long key = rand() % 3000 + 1;
+    unsigned long long key = rand() % 300 + 1;
     return key;
 }
 
@@ -276,7 +276,7 @@ unsigned long long concatenar_key(int aux, short key, unsigned long long privtke
 
 
 short **alloc_matrix_int(int nlines, int ncolumns) {
-    short **matrix = (short **) malloc(nlines * sizeof(short *));
+    short **matrix = (short **) malloc(nlines* sizeof(short *));
 
     for (int i = 0; i < nlines; i++) {
         *(matrix + i) = (short *) malloc(ncolumns * sizeof(short));
@@ -403,7 +403,7 @@ void bulk_populate_public_keys_int(short **matrix_kpub, int lines) {
 
 short *array_key(short **matrix, int i) {
     int n = 0;
-    short *key = (short *) malloc(20 * sizeof(short));
+    short *key = (short *) malloc(21 * sizeof(short));
     for (n = 0; *(*(matrix + n) + i) != -1; n++) {
         *(key + n) = *(*(matrix + n) + i);
     }
@@ -681,8 +681,8 @@ void load_txt_keys_int(short **matrix_kpub, short **matrix_kpriv, short **matrix
 char *key_long_2_digits_char(unsigned long long key) {
     unsigned long long mod = 0;
     int count = init_size(key);
-    char *aux = (char *) malloc(count +1 * sizeof(char));
-    char *key1 = (char *) malloc(count+1 * sizeof(char));
+    char *aux = (char *) malloc(count + 1 * sizeof(char));
+    char *key1 = (char *) malloc(count + 1 * sizeof(char));
     int j = count - 1, i = 0;
     for (i = 0; i < count; i++) {
         mod = key % 10;
@@ -701,7 +701,6 @@ unsigned long long key_digits_2_long_char(char *keydigits) {
     for (int i = 0; *(keydigits + i) != '\0'; i++) {
         key = (key * 10 + *(keydigits + i)) - '0';
     }
-    //printf("%llu", key);
     return key;
 }
 
@@ -731,7 +730,7 @@ char **alloc_matrix_char(int nlines, int ncolumns) {
 
 void store_key_char(char **matrix, int lines, unsigned long long key) {
     char *key_matrix = key_long_2_digits_char(key);
-    //printf("%d - %s\n",lines, key_matrix);
+
     int i = 0;
     for (i = 0; *(key_matrix + i) != '\0'; i++) {
         *(*(matrix + i) + lines) = *(key_matrix + i);

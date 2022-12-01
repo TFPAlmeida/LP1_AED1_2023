@@ -10,40 +10,6 @@
 #include <time.h>
 #include <string.h>
 
-typedef struct key_holder{
-    int lines;
-    int columns = 21;
-    short **matrix_kpub_int;
-    short **matrix_kpriv_int;
-    short **matrix_kcod_int;
-    char **matrix_kpub_char;
-    char **matrix_kpriv_char;
-    char **matrix_kcod_char;
-}KEY_HOLDERE;
-
-typedef struct porta_chaves{
-    KEY_HOLDERE info;
-    int geracao;
-    int atualizacao;
-    struct porta_chaves *pdown;
-}PORTA_CHAVES;
-
-typedef struct stack_porta_chaves{
-    int nnodes;
-    PORTA_CHAVES *ptop;
-}STACK_PORTA_CHAVES;
-
-typedef struct utilizador{
-    char nome[100];
-    char email[100];
-    struct stack_porta_chaves info;
-    struct utilizador *pdown;
-}UTILIZADOR;
-
-typedef struct stack_utilizadores{
-    int nutilizadores;
-    UTILIZADOR *ptop;
-}STACK_UTILIZADOR;
 
 /**-------------------------------------------------------------------------------------------------------------------*/
 
