@@ -7,38 +7,38 @@ int main(int argc, const char *argv[]) {
     char file_INFO_TXT_INFO_TXT_LISTA_UTILIZADORES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_LISTA_UTILIZADORES";
     char file_LOAD_TXT_LISTA_PORTACHAVES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_PORTACHAVES";
     /**--------------------------------------------------------------------------------------------------------------**/
-    //KEY_HOLDER *keyHolder1 = create_keyholder(20);
-    //KEY_HOLDER *keyHolder2 = create_keyholder(20);
-    //KEY_HOLDER *keyHolder3 = create_keyholder(20);
+    KEY_HOLDER *keyHolder1 = create_keyholder(20);
+    KEY_HOLDER *keyHolder2 = create_keyholder(20);
+    KEY_HOLDER *keyHolder3 = create_keyholder(20);
     /**--------------------------------------------------------------------------------------------------------------**/
-    //UTILIZADORES *utilizadores = criar_utilizadores();
-    //UTILIZADOR *utilizador1 = criar_utilizador("Tiago", "tiago@gmail.com");
-    //UTILIZADOR *utilizador2 = criar_utilizador("Marcio", "marcio@gmail.com");
+    UTILIZADORES *utilizadores = criar_utilizadores();
+    UTILIZADOR *utilizador1 = criar_utilizador("Tiago", "tiago@gmail.com");
+    UTILIZADOR *utilizador2 = criar_utilizador("Marcio", "marcio@gmail.com");
     //inserir_ordenado_nome(utilizadores, criar_utilizador("Maria", "maria@gmail.com"));
     //inserir_ordenado_nome(utilizadores, criar_utilizador("Jose", "jose@gmail.com"));
     //inserir_ordenado_nome(utilizadores, criar_utilizador("Carlos", "carlos@gmail.com"));
     //inserir_ordenado_nome(utilizadores, criar_utilizador("Beatriz", "biatriz@gmail.com"));
     /**--------------------------------------------------------------------------------------------------------------**/
-    //inserir_utilizador_cabeca(utilizadores, utilizador1);
-    //inserir_utilizador_cabeca(utilizadores, utilizador2);
-    //imprimir_utilizadores(utilizadores);
+    inserir_utilizador_cabeca(utilizadores, utilizador1);
+    inserir_utilizador_cabeca(utilizadores, utilizador2);
+    imprimir_utilizadores(utilizadores);
     /**--------------------------------------------------------------------------------------------------------------**/
-    //PORTA_CHAVE *portaChave1 = criar_porta_chave(keyHolder1);
-    //PORTA_CHAVE *portaChave2 = criar_porta_chave(keyHolder2);
-    //PORTA_CHAVE *portaChave3 = criar_porta_chave(keyHolder3);
+    PORTA_CHAVE *portaChave1 = criar_porta_chave(keyHolder1);
+    PORTA_CHAVE *portaChave2 = criar_porta_chave(keyHolder2);
+    PORTA_CHAVE *portaChave3 = criar_porta_chave(keyHolder3);
     /**--------------------------------------------------------------------------------------------------------------**/
-    //inserir_portachave_no_utilizador(utilizador1, portaChave1);
-    //inserir_portachave_no_utilizador(utilizador1, portaChave2);
-    //aux = 0;
-    //inserir_portachave_no_utilizador(utilizador2, portaChave3);
+    inserir_portachave_no_utilizador(utilizador1, portaChave1);
+    inserir_portachave_no_utilizador(utilizador1, portaChave2);
+    aux = 0;
+    inserir_portachave_no_utilizador(utilizador2, portaChave3);
 
     //remover_portachave_no_utilizador(utilizador, portaChave1);
-    //imprimir_portachaves(utilizador->portaChaves);
-    //escrever_ficheiro_txt(utilizadores, file_INFO_TXT_INFO_TXT_LISTA_UTILIZADORES);
+    imprimir_portachaves(utilizador1->portaChaves);
+    escrever_ficheiro_txt(utilizadores, file_INFO_TXT_INFO_TXT_LISTA_UTILIZADORES);
     /**--------------------------------------------------------------------------------------------------------------**/
-    PORTA_CHAVES *portaChaves = criar_porta_chaves();
-    load_portachaves_txt(portaChaves, file_LOAD_TXT_LISTA_PORTACHAVES);
-    imprimir_portachaves(portaChaves);
+    //PORTA_CHAVES *portaChaves = criar_porta_chaves();
+    //load_portachaves_txt(portaChaves, file_LOAD_TXT_LISTA_PORTACHAVES);
+    //imprimir_portachaves(portaChaves);
     return 0;
 }
 

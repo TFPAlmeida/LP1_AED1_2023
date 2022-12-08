@@ -161,6 +161,7 @@ void bulk_compute_runlengths_int(short **matrix_kpriv, short **matrix_kcod, int 
  * @return array of private keys matching the partialpubkey
  */
 short** search_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int lines, unsigned long long partialpubkey);
+
 void copy_matrix(short **matrix, short **aux, int lines ,const int *id);
 /**
  * Sort a matrix keys in ascending or descending order

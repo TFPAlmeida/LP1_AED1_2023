@@ -4,8 +4,7 @@
 
 #include "Project.h"
 
-#define NLINES 200
-#define NCOLUMNS 200
+
 
 int main_project(int argc, const char *argv[]) {
 
@@ -15,9 +14,9 @@ int main_project(int argc, const char *argv[]) {
     //char file_INFO_TXT_INT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_INT";
     //char file_LOAD_TXT_INT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\KEYS_INT";
 
-    //short **matrix_pubs_int = alloc_matrix_int(NLINES, NCOLUMNS);
-    //short **matrix_priv_int = alloc_matrix_int(NLINES, NCOLUMNS);
-    //short **matrix_rle_int = alloc_matrix_int(NLINES, NCOLUMNS);
+    //short **matrix_pubs_int = alloc_matrix_int(lines, 21);
+    //short **matrix_priv_int = alloc_matrix_int(lines, 21);
+    //short **matrix_rle_int = alloc_matrix_int(lines, 21);
 
     //bulk_populate_public_keys_int(matrix_pubs_int, lines);
     //bulk_compute_private_keys_int(matrix_pubs_int, matrix_priv_int, lines);
@@ -34,9 +33,9 @@ int main_project(int argc, const char *argv[]) {
     /*char file_INFO_TXT_CHAR[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_CHAR";
     char file_LOAD_TXT_CHAR[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\KEYS_CHAR";
 
-    char **matrix_pubs_char = alloc_matrix_char(NLINES, NCOLUMNS);
-    char **matrix_priv_char = alloc_matrix_char(NLINES, NCOLUMNS);
-    char **matrix_rle_char = alloc_matrix_char(NLINES, NCOLUMNS);
+    char **matrix_pubs_char = alloc_matrix_char(lines, 21);
+    char **matrix_priv_char = alloc_matrix_char(lines, 21);
+    char **matrix_rle_char = alloc_matrix_char(lines, 21);
 
     bulk_populate_public_keys_char(matrix_pubs_char, lines);
     bulk_compute_private_keys_char(matrix_pubs_char, matrix_priv_char, lines);
@@ -434,8 +433,27 @@ void bulk_compute_runlengths_int(short **matrix_kpriv, short **matrix_kcod, int 
 
 short **
 search_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int lines, unsigned long long partialpubkey) {
-    short **matrix_matching = alloc_matrix_int(NLINES, NCOLUMNS);
-
+    short **matrix_matching = alloc_matrix_int(lines, 21);
+    unsigned long long privkey = calc_private_key_int(partialpubkey);
+    short *key = key_long_2_digits_int(privkey);
+    int n = 0, count = 0, aux = 0;
+    for (int i = 0; i < lines; i++){
+        for (n = 0; *(*(matrix_kpriv + n) + i) != -1; n++){
+            if(*(*(matrix_kpriv + n) + i) == *(key + n)){
+                count++;
+            }else{
+                count = 0;
+                break;
+            }
+        }
+        if(n == count && n != 0){
+            while(n >= 0){
+                *(*(matrix_matching + n) + aux) = *(*(matrix_kpriv + n) + i);
+                aux++;
+                n--;
+            }
+        }
+    }
     return matrix_matching;
 }
 
@@ -465,7 +483,7 @@ void copy_matrix(short **matrix, short **aux, int lines, const int *id) {
 void sort_matrix_int(short **matrix, int lines, int order) {
     int *id = (int *) malloc(lines * sizeof(int));
     unsigned long long *key = array_key_v2(matrix, id, lines);
-    short **aux = alloc_matrix_int(NLINES, NCOLUMNS);
+    short **aux = alloc_matrix_int(lines, 21);
     mergeSort(key, id, 0, lines - 1, order);
     int n = 0;
     for (int i = 0; i < lines; i++) {
@@ -877,6 +895,31 @@ void bulk_compute_runlengths_char(char **matrix_kpriv, char **matrix_kcod, int l
     }
 }
 
+char** search_private_keys_char(char **matrix_kpub, char **matrix_kpriv, int lines, unsigned long long partialpubkey){
+    char **matrix = alloc_matrix_char(lines, 21);
+    unsigned long long privkey = calc_private_key_int(partialpubkey);
+    char *key = key_long_2_digits_char(privkey);
+    int n = 0, count = 0, aux = 0;
+    for (int i = 0; i < lines; i++){
+        for (n = 0; *(*(matrix_kpriv + n) + i) != '\0'; n++){
+            if(*(*(matrix_kpriv + n) + i) == *(key + n)){
+                count++;
+            }else{
+                count = 0;
+                break;
+            }
+        }
+        if(n == count && n != 0){
+            while(n >= 0){
+                *(*(matrix + n) + aux) = *(*(matrix_kpriv + n) + i);
+                aux++;
+                n--;
+            }
+        }
+    }
+    return matrix;
+}
+
 unsigned long long *array_key_char_v2(char **matrix, int *id, int lines) {
 
     unsigned long long *key = (unsigned long long *) malloc(lines * sizeof(unsigned long long));
@@ -903,7 +946,7 @@ void copy_matrix_char(char **matrix, char **aux, int lines, const int *id) {
 void sort_matrix_char(char **matrix, int lines, int order){
     int *id = (int *) malloc(lines * sizeof(int));
     unsigned long long *key = array_key_char_v2(matrix, id, lines);
-    char **aux = alloc_matrix_char(NLINES, NCOLUMNS);
+    char **aux = alloc_matrix_char(lines, 21);
     mergeSort(key, id, 0, lines - 1, order);
     int n = 0;
     for (int i = 0; i < lines; i++) {
