@@ -65,7 +65,7 @@ int lines_matriz(char filename[]){
 
 unsigned long long new_public_key_int(void) {
 
-    unsigned long long key = rand() % 300 + 1;
+    unsigned long long key = rand() % 500 + 1;
     return key;
 }
 
@@ -84,7 +84,7 @@ short *key_long_2_digits_int(unsigned long long key) {
         j--;
     }
     *(key1 + count) = -1;
-
+    free(aux);
     return key1;
 }
 
@@ -206,6 +206,8 @@ unsigned long long calc_runlength_int(unsigned long long privtkey) {
     }
     *(aux1 + j) = -1;
     privtkey_rle = key_digits_2_long_int(aux1);
+    free(aux);
+    free(aux1);
     return privtkey_rle;
 }
 
@@ -497,7 +499,10 @@ void sort_matrix_int(short **matrix, int lines, int order) {
         }
         *(*(matrix + n) + i) = -1;
     }
-
+    free(id);
+    for(int i = 0; i < lines; i++)
+        free(aux[i]);
+    free(aux);
 }
 
 
@@ -710,6 +715,7 @@ char *key_long_2_digits_char(unsigned long long key) {
         j--;
     }
     *(key1 + i) = '\0';
+    free(aux);
     return key1;
 }
 
@@ -959,6 +965,11 @@ void sort_matrix_char(char **matrix, int lines, int order){
         }
         *(*(matrix + n) + i) = '\0';
     }
+
+    free(id);
+    for(int i = 0; i < lines; i++)
+        free(aux[i]);
+    free(aux);
 }
 
 void sort_all_matrices_char(char **matrix_kpub, char **matrix_kpriv, char **matrix_kcod, int lines, int order){

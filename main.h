@@ -49,7 +49,7 @@ typedef struct utilizadores{
     UTILIZADOR *ptop;
 }UTILIZADORES;
 
-KEY_HOLDER *create_keyholder(int lines);
+KEY_HOLDER *create_keyholder(int lines, int order);
 PORTA_CHAVES *criar_porta_chaves();
 PORTA_CHAVE *criar_porta_chave(KEY_HOLDER *keyHolder);
 void inserir_porta_chave(PORTA_CHAVES *portaChaves, PORTA_CHAVE *portaChave);
