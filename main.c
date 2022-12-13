@@ -4,8 +4,10 @@
 int aux = 0;
 
 int main(int argc, const char *argv[]) {
-    char file_INFO_TXT_INFO_TXT_LISTA_UTILIZADORES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_LISTA_UTILIZADORES";
+    char file_INFO_TXT_LISTA_UTILIZADORES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_LISTA_UTILIZADORES";
     char file_LOAD_TXT_LISTA_PORTACHAVES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_PORTACHAVES";
+    char file_INFO_BIN_LISTA_UTILIZADORES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_BIN_LISTA_UTILIZADORES";
+
     /**--------------------------------------------------------------------------------------------------------------**/
     KEY_HOLDER *keyHolder1 = create_keyholder(10, 1);
     KEY_HOLDER *keyHolder2 = create_keyholder(10, 1);
@@ -34,7 +36,8 @@ int main(int argc, const char *argv[]) {
 
     //remover_portachave_no_utilizador(utilizador, portaChave1);
     //imprimir_portachaves(utilizador1->portaChaves);
-    escrever_ficheiro_txt(utilizadores, file_INFO_TXT_INFO_TXT_LISTA_UTILIZADORES);
+    //escrever_ficheiro_txt(utilizadores, file_INFO_TXT_LISTA_UTILIZADORES);
+    escrever_ficheiro_bin(utilizadores, file_INFO_BIN_LISTA_UTILIZADORES);
     /**--------------------------------------------------------------------------------------------------------------**/
     //PORTA_CHAVES *portaChaves = criar_porta_chaves();
     //load_portachaves_txt(portaChaves, file_LOAD_TXT_LISTA_PORTACHAVES);
@@ -468,7 +471,7 @@ void escrever_ficheiro_txt(UTILIZADORES *utilizadores, char filename[]) {
         fprintf(stdout, "ERRO\n");
         return;
     }
-    int count1 = 0, count2 = 0, count3 = 0;
+    int count1 = 0, count2 = 0;
 
     UTILIZADOR *utilizador_count = utilizadores->ptop;
 
@@ -544,6 +547,171 @@ void escrever_ficheiro_txt(UTILIZADORES *utilizadores, char filename[]) {
             portaChave = portaChave->pdown;
         }
 
+        utilizador = utilizador->pdown;
+    }
+    fclose(arquivoINFO);
+}
+
+void escrever_ficheiro_bin(UTILIZADORES *utilizadores, char filename[]){
+
+    FILE *fileInfo = NULL;
+
+    if ((fileInfo = fopen(filename, "wb")) == NULL) {
+        printf("ERRO %s\n", filename);
+        return;
+    }
+
+    int count1 = 0, count2 = 0;
+
+    UTILIZADOR *utilizador_count = utilizadores->ptop;
+
+    while(utilizador_count != NULL){
+        count1++;
+        utilizador_count = utilizador_count->pdown;
+    }
+
+    char name1[] = "Numero de utilizadores: ";
+    char name2[] = "Utilizador: ";
+    char name3[] = "Numero de Porta Chaves: ";
+    char name4[] = "Data de geracao: ";
+    char name5[] = "Data de atualizacao: ";
+    char name6[] = "Numero de linhas: ";
+    char name7[] = "INT keys Publicas:";
+    char name8[] = "INT keys Privadas:";
+    char name9[] = "INT keys Codificadas:";
+    char name10[] = "CHAR keys Publicas:";
+    char name11[] = "CHAR keys Privadas:";
+    char name12[] = "CHAR keys Codificadas:";
+
+    UTILIZADOR *utilizador = utilizadores->ptop;
+    int size_name1 = strlen(name1) + 1;
+    fwrite(&name1, sizeof(char),size_name1,fileInfo);
+    fwrite(&count1, sizeof(int),1,fileInfo);
+    fwrite("\n", sizeof(char),1,fileInfo);
+    while (utilizador != NULL){
+        int size_name2 = strlen(name2) + 1;
+        fwrite(&name2,sizeof(char),size_name2,fileInfo);
+        int size_name = strlen(utilizador->nome) + 1;
+        fwrite(&utilizador->nome, sizeof(char), size_name, fileInfo);
+        fwrite("/", sizeof(char),1,fileInfo);
+        int size_email = strlen(utilizador->email) + 1;
+        fwrite(&utilizador->email, sizeof(char), size_email, fileInfo);
+        fwrite("\n", sizeof(char),1,fileInfo);
+
+        PORTA_CHAVE *portaChave_count = utilizador->portaChaves->ptop;
+        while (portaChave_count != NULL) {
+            count2++;
+            portaChave_count = portaChave_count->pdown;
+        }
+        PORTA_CHAVE *portaChave = utilizador->portaChaves->ptop;
+        int size_name3 = strlen(name3) + 1;
+        fwrite(&name3,sizeof(char),size_name3,fileInfo);
+        fwrite(&count2, sizeof(int),1,fileInfo);
+        fwrite("\n", sizeof(char),1,fileInfo);
+        while(portaChave != NULL){
+            int size_name4 = strlen(name4) + 1;
+            fwrite(&name4, sizeof(char),size_name4,fileInfo);
+            fwrite(&portaChave->geracao.dia, sizeof(int),1,fileInfo);
+            fwrite("/", sizeof(char),1,fileInfo);
+            fwrite(&portaChave->geracao.mes, sizeof(int),1,fileInfo);
+            fwrite("/", sizeof(char),1,fileInfo);
+            fwrite(&portaChave->geracao.ano, sizeof(int),1,fileInfo);
+            fwrite(" ", sizeof(char),1,fileInfo);
+            fwrite(&portaChave->geracao.hora, sizeof(int),1,fileInfo);
+            fwrite("/", sizeof(char),1,fileInfo);
+            fwrite(&portaChave->geracao.min, sizeof(int),1,fileInfo);
+            fwrite("/", sizeof(char),1,fileInfo);
+            fwrite(&portaChave->geracao.seg, sizeof(int),1,fileInfo);
+            fwrite("\n", sizeof(char),1,fileInfo);
+
+            int size_name5 = strlen(name5) + 1;
+            fwrite(&name5, sizeof(char),size_name5,fileInfo);
+            fwrite(&portaChave->atualizacao.dia, sizeof(int),1,fileInfo);
+            fwrite("/", sizeof(char),1,fileInfo);
+            fwrite(&portaChave->atualizacao.mes, sizeof(int),1,fileInfo);
+            fwrite("/", sizeof(char),1,fileInfo);
+            fwrite(&portaChave->atualizacao.ano, sizeof(int),1,fileInfo);
+            fwrite(" ", sizeof(char),1,fileInfo);
+            fwrite(&portaChave->atualizacao.hora, sizeof(int),1,fileInfo);
+            fwrite("/", sizeof(char),1,fileInfo);
+            fwrite(&portaChave->atualizacao.min, sizeof(int),1,fileInfo);
+            fwrite("/", sizeof(char),1,fileInfo);
+            fwrite(&portaChave->atualizacao.seg, sizeof(int),1,fileInfo);
+            fwrite("\n", sizeof(char),1,fileInfo);
+
+            int size_name6 = strlen(name6) + 1;
+            fwrite(&name6, sizeof(char),size_name6,fileInfo);
+            fwrite(&portaChave->keyHolder->lines, sizeof(int),1,fileInfo);
+            fwrite("\n", sizeof(char),1,fileInfo);
+
+            int size_name7 = strlen(name7) + 1;
+            fwrite(&name7, sizeof(char),size_name7,fileInfo);
+            fwrite("\n", sizeof(char),1,fileInfo);
+            for (int i = 0; i < portaChave->keyHolder->lines; i++) {
+                for (int j = 0; *(*(portaChave->keyHolder->matrix_kpub_int + j) + i) != -1; ++j) {
+                    short matrix_aux = *(*(portaChave->keyHolder->matrix_kpub_int + j) + i);
+                    fwrite(&matrix_aux, sizeof(short),1,fileInfo);
+                    fwrite(" ", sizeof(char),1,fileInfo);
+                }
+                fwrite("\n", sizeof(char),1,fileInfo);
+            }
+            int size_name8 = strlen(name8) + 1;
+            fwrite(&name8, sizeof(char),size_name8,fileInfo);
+            fwrite("\n", sizeof(char),1,fileInfo);
+            for (int i = 0; i < portaChave->keyHolder->lines; i++) {
+                for (int j = 0; *(*(portaChave->keyHolder->matrix_kpriv_int + j) + i) != -1; ++j) {
+                    short matrix_aux = *(*(portaChave->keyHolder->matrix_kpriv_int + j) + i);
+                    fwrite(&matrix_aux, sizeof(short),1,fileInfo);
+                    fwrite(" ", sizeof(char),1,fileInfo);
+                }
+                fwrite("\n", sizeof(char),1,fileInfo);
+            }
+            int size_name9 = strlen(name9) + 1;
+            fwrite(&name9, sizeof(char),size_name9,fileInfo);
+            fwrite("\n", sizeof(char),1,fileInfo);
+            for (int i = 0; i < portaChave->keyHolder->lines; i++) {
+                for (int j = 0; *(*(portaChave->keyHolder->matrix_kcod_int + j) + i) != -1; ++j) {
+                    short matrix_aux = *(*(portaChave->keyHolder->matrix_kcod_int + j) + i);
+                    fwrite(&matrix_aux, sizeof(short),1,fileInfo);
+                    fwrite(" ", sizeof(char),1,fileInfo);
+                }
+                fwrite("\n", sizeof(char),1,fileInfo);
+            }
+            int size_name10 = strlen(name10) + 1;
+            fwrite(&name10, sizeof(char),size_name10,fileInfo);
+            fwrite("\n", sizeof(char),1,fileInfo);
+            for (int i = 0; i < portaChave->keyHolder->lines; i++) {
+                for (int j = 0; *(*(portaChave->keyHolder->matrix_kpub_char + j) + i) != '\0'; ++j) {
+                    char matrix_aux = *(*(portaChave->keyHolder->matrix_kpub_char + j) + i);
+                    fwrite(&matrix_aux, sizeof(char),1,fileInfo);
+                    fwrite(" ", sizeof(char),1,fileInfo);
+                }
+                fwrite("\n", sizeof(char),1,fileInfo);
+            }
+            int size_name11 = strlen(name11) + 1;
+            fwrite(&name11, sizeof(char),size_name11,fileInfo);
+            fwrite("\n", sizeof(char),1,fileInfo);
+            for (int i = 0; i < portaChave->keyHolder->lines; i++) {
+                for (int j = 0; *(*(portaChave->keyHolder->matrix_kpriv_char + j) + i) != '\0'; ++j) {
+                    char matrix_aux = *(*(portaChave->keyHolder->matrix_kpriv_char + j) + i);
+                    fwrite(&matrix_aux, sizeof(char),1,fileInfo);
+                    fwrite(" ", sizeof(char),1,fileInfo);
+                }
+                fwrite("\n", sizeof(char),1,fileInfo);
+            }
+            int size_name12 = strlen(name12) + 1;
+            fwrite(&name12, sizeof(char),size_name12,fileInfo);
+            fwrite("\n", sizeof(char),1,fileInfo);
+            for (int i = 0; i < portaChave->keyHolder->lines; i++) {
+                for (int j = 0; *(*(portaChave->keyHolder->matrix_kcod_char + j) + i) != '\0'; ++j) {
+                    char matrix_aux = *(*(portaChave->keyHolder->matrix_kcod_char + j) + i);
+                    fwrite(&matrix_aux, sizeof(char),1,fileInfo);
+                    fwrite(" ", sizeof(char),1,fileInfo);
+                }
+                fwrite("\n", sizeof(char),1,fileInfo);
+            }
+            portaChave = portaChave->pdown;
+        }
         utilizador = utilizador->pdown;
     }
 }
