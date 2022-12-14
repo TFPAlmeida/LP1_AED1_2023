@@ -68,4 +68,5 @@ void imprimir_utilizadores(UTILIZADORES *utilizadores);
 void imprimir_portachaves(PORTA_CHAVES *portaChaves);
 void escrever_ficheiro_txt(UTILIZADORES *utilizadores, char filename[]);
 void load_portachaves_txt(PORTA_CHAVES *portaChaves, char filename[]);
+void escrever_ficheiro_bin(UTILIZADORES *utilizadores, char filename[]);
 #endif //LP1_AED1_2023_MAIN_H
