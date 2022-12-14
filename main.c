@@ -4,8 +4,9 @@
 int aux = 0;
 
 int main(int argc, const char *argv[]) {
-    char file_INFO_TXT_INFO_TXT_LISTA_UTILIZADORES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_LISTA_UTILIZADORES";
+    char file_INFO_TXT_LISTA_UTILIZADORES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_LISTA_UTILIZADORES";
     char file_LOAD_TXT_LISTA_PORTACHAVES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_PORTACHAVES";
+    char file_INFO_BIN_LISTA_UTILIZADORES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_BIN_LISTA_UTILIZADORES";
     /**--------------------------------------------------------------------------------------------------------------**/
     KEY_HOLDER *keyHolder1 = create_keyholder(10, 1);
     KEY_HOLDER *keyHolder2 = create_keyholder(10, 1);
@@ -34,7 +35,8 @@ int main(int argc, const char *argv[]) {
 
     //remover_portachave_no_utilizador(utilizador, portaChave1);
     //imprimir_portachaves(utilizador1->portaChaves);
-    escrever_ficheiro_txt(utilizadores, file_INFO_TXT_INFO_TXT_LISTA_UTILIZADORES);
+    //escrever_ficheiro_txt(utilizadores, file_INFO_TXT_LISTA_UTILIZADORES);
+    escrever_ficheiro_bin(utilizadores, file_INFO_BIN_LISTA_UTILIZADORES);
     /**--------------------------------------------------------------------------------------------------------------**/
     //PORTA_CHAVES *portaChaves = criar_porta_chaves();
     //load_portachaves_txt(portaChaves, file_LOAD_TXT_LISTA_PORTACHAVES);

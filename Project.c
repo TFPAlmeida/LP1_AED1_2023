@@ -65,7 +65,7 @@ int lines_matriz(char filename[]){
 
 unsigned long long new_public_key_int(void) {
 
-    unsigned long long key = rand() % 500 + 1;
+    unsigned long long key = rand() % 300 + 1;
     return key;
 }
 
