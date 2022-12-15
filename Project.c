@@ -11,8 +11,8 @@ int main_project(int argc, const char *argv[]) {
     /**--------------------------------------------------------------------------------------------------------------**/
     //int lines = 8;
 
-    //char file_INFO_TXT_INT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_INT";
-    //char file_LOAD_TXT_INT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\KEYS_INT";
+    //char file_INFO_TXT_INT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_INT.txt";
+    //char file_LOAD_TXT_INT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\KEYS_INT.txt";
 
     //short **matrix_pubs_int = alloc_matrix_int(lines, 21);
     //short **matrix_priv_int = alloc_matrix_int(lines, 21);
@@ -30,8 +30,8 @@ int main_project(int argc, const char *argv[]) {
     //list_keys_int(matrix_pubs_int, matrix_priv_int, matrix_rle_int, lines, 1);
     //save_txt_keys_int(matrix_pubs_int, matrix_priv_int, matrix_rle_int, lines, file_INFO_TXT_INT);
     /**---------------------------------------------------------------------------------------------------------------*/
-    /*char file_INFO_TXT_CHAR[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_CHAR";
-    char file_LOAD_TXT_CHAR[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\KEYS_CHAR";
+    /*char file_INFO_TXT_CHAR[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_CHAR.txt";
+    char file_LOAD_TXT_CHAR[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\KEYS_CHAR.txt";
 
     char **matrix_pubs_char = alloc_matrix_char(lines, 21);
     char **matrix_priv_char = alloc_matrix_char(lines, 21);

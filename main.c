@@ -4,39 +4,43 @@
 int aux = 0;
 
 int main(int argc, const char *argv[]) {
-    char file_INFO_TXT_LISTA_UTILIZADORES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_LISTA_UTILIZADORES";
-    char file_LOAD_TXT_LISTA_PORTACHAVES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_PORTACHAVES";
-    char file_INFO_BIN_LISTA_UTILIZADORES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_BIN_LISTA_UTILIZADORES";
+    char file_INFO_TXT_LISTA_UTILIZADORES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_LISTA_UTILIZADORES.txt";
+    char file_LOAD_INFO_TXT_LISTA_UTILIZADORES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\LOAD_INFO_TXT_LISTA_UTILIZADORES.txt";
+    //char file_LOAD_TXT_LISTA_PORTACHAVES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_PORTACHAVES.txt";
+    char file_INFO_BIN_LISTA_UTILIZADORES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_BIN_LISTA_UTILIZADORES.txt";
+    char file_LOAD_INFO_BIN_LISTA_UTILIZADORES[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\LOAD_INFO_BIN_LISTA_UTILIZADORES.txt";
     /**--------------------------------------------------------------------------------------------------------------**/
-    KEY_HOLDER *keyHolder1 = create_keyholder(10, 1);
-    KEY_HOLDER *keyHolder2 = create_keyholder(10, 1);
-    KEY_HOLDER *keyHolder3 = create_keyholder(10, 1);
+    //KEY_HOLDER *keyHolder1 = create_keyholder(10, 1);
+    //KEY_HOLDER *keyHolder2 = create_keyholder(10, 1);
+    //KEY_HOLDER *keyHolder3 = create_keyholder(10, 1);
     /**--------------------------------------------------------------------------------------------------------------**/
     UTILIZADORES *utilizadores = criar_utilizadores();
-    UTILIZADOR *utilizador1 = criar_utilizador("Tiago", "tiago@gmail.com");
-    UTILIZADOR *utilizador2 = criar_utilizador("Marcio", "marcio@gmail.com");
+    //UTILIZADOR *utilizador1 = criar_utilizador("Tiago", "tiago@gmail.com");
+    //UTILIZADOR *utilizador2 = criar_utilizador("Marcio", "marcio@gmail.com");
     //inserir_ordenado_nome(utilizadores, criar_utilizador("Maria", "maria@gmail.com"));
     //inserir_ordenado_nome(utilizadores, criar_utilizador("Jose", "jose@gmail.com"));
     //inserir_ordenado_nome(utilizadores, criar_utilizador("Carlos", "carlos@gmail.com"));
     //inserir_ordenado_nome(utilizadores, criar_utilizador("Beatriz", "biatriz@gmail.com"));
     /**--------------------------------------------------------------------------------------------------------------**/
-    inserir_utilizador_cabeca(utilizadores, utilizador1);
-    inserir_utilizador_cabeca(utilizadores, utilizador2);
-    imprimir_utilizadores(utilizadores);
+    //inserir_utilizador_cabeca(utilizadores, utilizador1);
+    //inserir_utilizador_cabeca(utilizadores, utilizador2);
+    //imprimir_utilizadores(utilizadores);
     /**--------------------------------------------------------------------------------------------------------------**/
-    PORTA_CHAVE *portaChave1 = criar_porta_chave(keyHolder1);
-    PORTA_CHAVE *portaChave2 = criar_porta_chave(keyHolder2);
-    PORTA_CHAVE *portaChave3 = criar_porta_chave(keyHolder3);
+    //PORTA_CHAVE *portaChave1 = criar_porta_chave(keyHolder1);
+    //PORTA_CHAVE *portaChave2 = criar_porta_chave(keyHolder2);
+    //PORTA_CHAVE *portaChave3 = criar_porta_chave(keyHolder3);
     /**--------------------------------------------------------------------------------------------------------------**/
-    inserir_portachave_no_utilizador(utilizador1, portaChave1);
-    inserir_portachave_no_utilizador(utilizador1, portaChave2);
-    aux = 0;
-    inserir_portachave_no_utilizador(utilizador2, portaChave3);
+    //inserir_portachave_no_utilizador(utilizador1, portaChave1);
+    //inserir_portachave_no_utilizador(utilizador1, portaChave2);
+    //aux = 0;
+    //inserir_portachave_no_utilizador(utilizador2, portaChave3);
 
     //remover_portachave_no_utilizador(utilizador, portaChave1);
     //imprimir_portachaves(utilizador1->portaChaves);
-    //escrever_ficheiro_txt(utilizadores, file_INFO_TXT_LISTA_UTILIZADORES);
-    escrever_ficheiro_bin(utilizadores, file_INFO_BIN_LISTA_UTILIZADORES);
+    load_utilizadores_txt(utilizadores, file_LOAD_INFO_TXT_LISTA_UTILIZADORES);
+    //imprimir_utilizadores(utilizadores);
+    escrever_ficheiro_txt(utilizadores, file_INFO_TXT_LISTA_UTILIZADORES);
+    //escrever_ficheiro_bin(utilizadores, file_INFO_BIN_LISTA_UTILIZADORES);
     /**--------------------------------------------------------------------------------------------------------------**/
     //PORTA_CHAVES *portaChaves = criar_porta_chaves();
     //load_portachaves_txt(portaChaves, file_LOAD_TXT_LISTA_PORTACHAVES);
@@ -60,11 +64,13 @@ KEY_HOLDER *create_keyholder(int lines, int order) {
     bulk_populate_public_keys_int(keyHolder_n->matrix_kpub_int, keyHolder_n->lines);
     bulk_compute_private_keys_int(keyHolder_n->matrix_kpub_int, keyHolder_n->matrix_kpriv_int, keyHolder_n->lines);
     bulk_compute_runlengths_int(keyHolder_n->matrix_kpriv_int, keyHolder_n->matrix_kcod_int, keyHolder_n->lines);
-    sort_all_matrices_int(keyHolder_n->matrix_kpub_int,keyHolder_n->matrix_kpriv_int,keyHolder_n->matrix_kcod_int,keyHolder_n->lines,order);
+    sort_all_matrices_int(keyHolder_n->matrix_kpub_int, keyHolder_n->matrix_kpriv_int, keyHolder_n->matrix_kcod_int,
+                          keyHolder_n->lines, order);
     bulk_populate_public_keys_char(keyHolder_n->matrix_kpub_char, keyHolder_n->lines);
     bulk_compute_private_keys_char(keyHolder_n->matrix_kpub_char, keyHolder_n->matrix_kpriv_char, keyHolder_n->lines);
     bulk_compute_runlengths_char(keyHolder_n->matrix_kpriv_char, keyHolder_n->matrix_kcod_char, keyHolder_n->lines);
-    sort_all_matrices_char(keyHolder_n->matrix_kpub_char,keyHolder_n->matrix_kpriv_char,keyHolder_n->matrix_kcod_char,keyHolder_n->lines,order);
+    sort_all_matrices_char(keyHolder_n->matrix_kpub_char, keyHolder_n->matrix_kpriv_char, keyHolder_n->matrix_kcod_char,
+                           keyHolder_n->lines, order);
     return keyHolder_n;
 }
 
@@ -87,10 +93,12 @@ PORTA_CHAVE *criar_porta_chave(KEY_HOLDER *keyHolder) {
     portaChave->geracao.hora = tm.tm_hour;
     portaChave->geracao.min = tm.tm_min;
     portaChave->geracao.seg = tm.tm_sec;
+
     portaChave->pdown = NULL;
     return portaChave;
 }
 
+/*
 PORTA_CHAVE *load_porta_chave() {
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
@@ -106,7 +114,7 @@ PORTA_CHAVE *load_porta_chave() {
     portaChave->geracao.seg = tm.tm_sec;
     portaChave->pdown = NULL;
     return portaChave;
-}
+}*/
 
 
 void inserir_porta_chave(PORTA_CHAVES *portaChaves, PORTA_CHAVE *portaChave) {
@@ -284,6 +292,7 @@ void imprimir_portachaves(PORTA_CHAVES *portaChaves) {
         portaChave = portaChave->pdown;
     }
 }
+
 /*
 void escrever_ficheiro_txt(UTILIZADORES *utilizadores, char filename[]) {
     FILE *arquivoINFO = NULL;
@@ -474,13 +483,14 @@ void escrever_ficheiro_txt(UTILIZADORES *utilizadores, char filename[]) {
 
     UTILIZADOR *utilizador_count = utilizadores->ptop;
 
-    while(utilizador_count != NULL){
+    while (utilizador_count != NULL) {
         count1++;
         utilizador_count = utilizador_count->pdown;
     }
 
     UTILIZADOR *utilizador = utilizadores->ptop;
     fprintf(arquivoINFO, "Numero de utilizadores: %d\n", count1);
+    count1 = 0;
     while (utilizador != NULL) {
         fprintf(arquivoINFO, "Utilizador: %-10s %s\n", utilizador->nome, utilizador->email);
         PORTA_CHAVE *portaChave_count = utilizador->portaChaves->ptop;
@@ -490,6 +500,7 @@ void escrever_ficheiro_txt(UTILIZADORES *utilizadores, char filename[]) {
         }
         PORTA_CHAVE *portaChave = utilizador->portaChaves->ptop;
         fprintf(arquivoINFO, "Numero de Porta Chaves do Utilizador: %d\n", count2);
+        count2 = 0;
         while (portaChave != NULL) {
 
             fprintf(arquivoINFO, "Porta Chave criado em: %d/%d/%d  %d:%d:%d\n", portaChave->geracao.dia,
@@ -546,6 +557,270 @@ void escrever_ficheiro_txt(UTILIZADORES *utilizadores, char filename[]) {
             portaChave = portaChave->pdown;
         }
 
+        utilizador = utilizador->pdown;
+    }
+}
+
+void load_utilizadores_txt(UTILIZADORES *utilizadores, char filename[]) {
+    FILE *arquivo;
+
+    if ((arquivo = fopen(filename, "r")) == NULL) {
+        fprintf(stdout, "ERRO\n");
+    }
+    KEY_HOLDER *keyHolder_n = (KEY_HOLDER *) malloc(sizeof(KEY_HOLDER));
+    char aux1[100], aux2[100];
+    int n1 = 0, n2 = 0, n3 = 0, k = 0;
+    char n4[30];
+    fscanf(arquivo, "%*[^:]: %d", &n1);
+    //printf("%d\n",n1);
+    //while(arquivo != NULL){
+    for (int i = 0; i < n1; i++) {
+        fscanf(arquivo, "%*[^:]: %s %s", aux1, aux2);
+        UTILIZADOR *utilizador = criar_utilizador(aux1, aux2);
+        inserir_utilizador_cabeca(utilizadores, utilizador);
+        fscanf(arquivo, "%*[^:]: %d", &n2);
+        for (int n = 0; n < n2; n++) {
+            fscanf(arquivo, "%*[^:]: %d", &n3);
+            //printf("%d\n",n3);
+            keyHolder_n->lines = n3;
+            keyHolder_n->columns = 21;
+            keyHolder_n->matrix_kpub_int = alloc_matrix_int(keyHolder_n->lines, keyHolder_n->columns);
+            keyHolder_n->matrix_kpub_char = alloc_matrix_char(keyHolder_n->lines, keyHolder_n->columns);
+            keyHolder_n->matrix_kpriv_int = alloc_matrix_int(keyHolder_n->lines, keyHolder_n->columns);
+            keyHolder_n->matrix_kpriv_char = alloc_matrix_char(keyHolder_n->lines, keyHolder_n->columns);
+            keyHolder_n->matrix_kcod_int = alloc_matrix_int(keyHolder_n->lines, keyHolder_n->columns);
+            keyHolder_n->matrix_kcod_char = alloc_matrix_char(keyHolder_n->lines, keyHolder_n->columns);
+
+            fscanf(arquivo, "%*[^:]:");
+            for (int x = 0; x < n3; x++) {
+                fscanf(arquivo, "%s", n4);
+                short *arr = key_long_2_digits_int(atoi(n4));
+                for (k = 0; *(arr + k) != -1; k++) {
+                    *(*(keyHolder_n->matrix_kpub_int + k) + x) = *(arr + k);
+                }
+                *(*(keyHolder_n->matrix_kpub_int + k) + x) = -1;
+            }
+
+            fscanf(arquivo, "%*[^:]:");
+            for (int x = 0; x < n3; x++) {
+                fscanf(arquivo, "%s", n4);
+                short *arr = key_long_2_digits_int(atoi(n4));
+                for (k = 0; *(arr + k) != -1; k++) {
+                    *(*(keyHolder_n->matrix_kpriv_int + k) + x) = *(arr + k);
+                }
+                *(*(keyHolder_n->matrix_kpriv_int + k) + x) = -1;
+            }
+
+            fscanf(arquivo, "%*[^:]:");
+            for (int x = 0; x < n3; x++) {
+                fscanf(arquivo, "%s", n4);
+                short *arr = key_long_2_digits_int(atoi(n4));
+                for (k = 0; *(arr + k) != -1; k++) {
+                    *(*(keyHolder_n->matrix_kcod_int + k) + x) = *(arr + k);
+                }
+                *(*(keyHolder_n->matrix_kcod_int + k) + x) = -1;
+            }
+
+            fscanf(arquivo, "%*[^:]:");
+            for (int x = 0; x < n3; x++) {
+                fscanf(arquivo, "%s", n4);
+                char *arr = key_long_2_digits_char(atoi(n4));
+                for (k = 0; *(arr + k) != '\0'; k++) {
+                    *(*(keyHolder_n->matrix_kpub_char + k) + x) = *(arr + k);
+                }
+                *(*(keyHolder_n->matrix_kpub_char + k) + x) = '\0';
+            }
+
+            fscanf(arquivo, "%*[^:]:");
+            for (int x = 0; x < n3; x++) {
+                fscanf(arquivo, "%s", n4);
+                char *arr = key_long_2_digits_char(atoi(n4));
+                for (k = 0; *(arr + k) != '\0'; k++) {
+                    *(*(keyHolder_n->matrix_kpriv_char + k) + x) = *(arr + k);
+                }
+                *(*(keyHolder_n->matrix_kpriv_char + k) + x) = '\0';
+            }
+
+            fscanf(arquivo, "%*[^:]:");
+            for (int x = 0; x < n3; x++) {
+                fscanf(arquivo, "%s", n4);
+                char *arr = key_long_2_digits_char(atoi(n4));
+                for (k = 0; *(arr + k) != '\0'; k++) {
+                    *(*(keyHolder_n->matrix_kcod_char + k) + x) = *(arr + k);
+                }
+                *(*(keyHolder_n->matrix_kcod_char + k) + x) = '\0';
+            }
+
+            PORTA_CHAVE *portaChave = criar_porta_chave(keyHolder_n);
+            inserir_portachave_no_utilizador(utilizador, portaChave);
+        }
+        n2 = 0;
+        aux = 0;
+    }
+    //}
+    fclose(arquivo);
+}
+
+void escrever_ficheiro_bin(UTILIZADORES *utilizadores, char filename[]) {
+
+    FILE *fileInfo = NULL;
+
+    if ((fileInfo = fopen(filename, "wb")) == NULL) {
+        printf("ERRO %s\n", filename);
+        return;
+    }
+    printf("1");
+    int count1 = 0, count2 = 0;
+
+    UTILIZADOR *utilizador_count = utilizadores->ptop;
+
+    while (utilizador_count != NULL) {
+        count1++;
+        utilizador_count = utilizador_count->pdown;
+    }
+
+    char name1[] = "Numero de utilizadores: ";
+    char name2[] = "Utilizador: ";
+    char name3[] = "Numero de Porta Chaves: ";
+    char name4[] = "Data de geracao: ";
+    char name5[] = "Data de atualizacao: ";
+    char name6[] = "Numero de linhas: ";
+    char name7[] = "INT keys Publicas:";
+    char name8[] = "INT keys Privadas:";
+    char name9[] = "INT keys Codificadas:";
+    char name10[] = "CHAR keys Publicas:";
+    char name11[] = "CHAR keys Privadas:";
+    char name12[] = "CHAR keys Codificadas:";
+
+    UTILIZADOR *utilizador = utilizadores->ptop;
+    int size_name1 = strlen(name1) + 1;
+    fwrite(&name1, sizeof(char), size_name1, fileInfo);
+    fwrite(&count1, sizeof(int), 1, fileInfo);
+    fwrite("\n", sizeof(char), 1, fileInfo);
+    while (utilizador != NULL) {
+        int size_name2 = strlen(name2) + 1;
+        fwrite(&name2, sizeof(char), size_name2, fileInfo);
+        int size_name = strlen(utilizador->nome) + 1;
+        fwrite(&utilizador->nome, sizeof(char), size_name, fileInfo);
+        fwrite("/", sizeof(char), 1, fileInfo);
+        int size_email = strlen(utilizador->email) + 1;
+        fwrite(&utilizador->email, sizeof(char), size_email, fileInfo);
+        fwrite("\n", sizeof(char), 1, fileInfo);
+
+        PORTA_CHAVE *portaChave_count = utilizador->portaChaves->ptop;
+        while (portaChave_count != NULL) {
+            count2++;
+            portaChave_count = portaChave_count->pdown;
+        }
+        PORTA_CHAVE *portaChave = utilizador->portaChaves->ptop;
+        int size_name3 = strlen(name3) + 1;
+        fwrite(&name3, sizeof(char), size_name3, fileInfo);
+        fwrite(&count2, sizeof(int), 1, fileInfo);
+        fwrite("\n", sizeof(char), 1, fileInfo);
+        while (portaChave != NULL) {
+            int size_name4 = strlen(name4) + 1;
+            fwrite(&name4, sizeof(char), size_name4, fileInfo);
+            fwrite(&portaChave->geracao.dia, sizeof(int), 1, fileInfo);
+            fwrite("/", sizeof(char), 1, fileInfo);
+            fwrite(&portaChave->geracao.mes, sizeof(int), 1, fileInfo);
+            fwrite("/", sizeof(char), 1, fileInfo);
+            fwrite(&portaChave->geracao.ano, sizeof(int), 1, fileInfo);
+            fwrite(" ", sizeof(char), 1, fileInfo);
+            fwrite(&portaChave->geracao.hora, sizeof(int), 1, fileInfo);
+            fwrite("/", sizeof(char), 1, fileInfo);
+            fwrite(&portaChave->geracao.min, sizeof(int), 1, fileInfo);
+            fwrite("/", sizeof(char), 1, fileInfo);
+            fwrite(&portaChave->geracao.seg, sizeof(int), 1, fileInfo);
+            fwrite("\n", sizeof(char), 1, fileInfo);
+
+            int size_name5 = strlen(name5) + 1;
+            fwrite(&name5, sizeof(char), size_name5, fileInfo);
+            fwrite(&portaChave->atualizacao.dia, sizeof(int), 1, fileInfo);
+            fwrite("/", sizeof(char), 1, fileInfo);
+            fwrite(&portaChave->atualizacao.mes, sizeof(int), 1, fileInfo);
+            fwrite("/", sizeof(char), 1, fileInfo);
+            fwrite(&portaChave->atualizacao.ano, sizeof(int), 1, fileInfo);
+            fwrite(" ", sizeof(char), 1, fileInfo);
+            fwrite(&portaChave->atualizacao.hora, sizeof(int), 1, fileInfo);
+            fwrite("/", sizeof(char), 1, fileInfo);
+            fwrite(&portaChave->atualizacao.min, sizeof(int), 1, fileInfo);
+            fwrite("/", sizeof(char), 1, fileInfo);
+            fwrite(&portaChave->atualizacao.seg, sizeof(int), 1, fileInfo);
+            fwrite("\n", sizeof(char), 1, fileInfo);
+
+            int size_name6 = strlen(name6) + 1;
+            fwrite(&name6, sizeof(char), size_name6, fileInfo);
+            fwrite(&portaChave->keyHolder->lines, sizeof(int), 1, fileInfo);
+            fwrite("\n", sizeof(char), 1, fileInfo);
+
+            int size_name7 = strlen(name7) + 1;
+            fwrite(&name7, sizeof(char), size_name7, fileInfo);
+            fwrite("\n", sizeof(char), 1, fileInfo);
+            for (int i = 0; i < portaChave->keyHolder->lines; i++) {
+                for (int j = 0; *(*(portaChave->keyHolder->matrix_kpub_int + j) + i) != -1; ++j) {
+                    short matrix_aux = *(*(portaChave->keyHolder->matrix_kpub_int + j) + i);
+                    fwrite(&matrix_aux, sizeof(short), 1, fileInfo);
+                    fwrite(" ", sizeof(char), 1, fileInfo);
+                }
+                fwrite("\n", sizeof(char), 1, fileInfo);
+            }
+            int size_name8 = strlen(name8) + 1;
+            fwrite(&name8, sizeof(char), size_name8, fileInfo);
+            fwrite("\n", sizeof(char), 1, fileInfo);
+            for (int i = 0; i < portaChave->keyHolder->lines; i++) {
+                for (int j = 0; *(*(portaChave->keyHolder->matrix_kpriv_int + j) + i) != -1; ++j) {
+                    short matrix_aux = *(*(portaChave->keyHolder->matrix_kpriv_int + j) + i);
+                    fwrite(&matrix_aux, sizeof(short), 1, fileInfo);
+                    fwrite(" ", sizeof(char), 1, fileInfo);
+                }
+                fwrite("\n", sizeof(char), 1, fileInfo);
+            }
+            int size_name9 = strlen(name9) + 1;
+            fwrite(&name9, sizeof(char), size_name9, fileInfo);
+            fwrite("\n", sizeof(char), 1, fileInfo);
+            for (int i = 0; i < portaChave->keyHolder->lines; i++) {
+                for (int j = 0; *(*(portaChave->keyHolder->matrix_kcod_int + j) + i) != -1; ++j) {
+                    short matrix_aux = *(*(portaChave->keyHolder->matrix_kcod_int + j) + i);
+                    fwrite(&matrix_aux, sizeof(short), 1, fileInfo);
+                    fwrite(" ", sizeof(char), 1, fileInfo);
+                }
+                fwrite("\n", sizeof(char), 1, fileInfo);
+            }
+            int size_name10 = strlen(name10) + 1;
+            fwrite(&name10, sizeof(char), size_name10, fileInfo);
+            fwrite("\n", sizeof(char), 1, fileInfo);
+            for (int i = 0; i < portaChave->keyHolder->lines; i++) {
+                for (int j = 0; *(*(portaChave->keyHolder->matrix_kpub_char + j) + i) != '\0'; ++j) {
+                    char matrix_aux = *(*(portaChave->keyHolder->matrix_kpub_char + j) + i);
+                    fwrite(&matrix_aux, sizeof(char), 1, fileInfo);
+                    fwrite(" ", sizeof(char), 1, fileInfo);
+                }
+                fwrite("\n", sizeof(char), 1, fileInfo);
+            }
+            int size_name11 = strlen(name11) + 1;
+            fwrite(&name11, sizeof(char), size_name11, fileInfo);
+            fwrite("\n", sizeof(char), 1, fileInfo);
+            for (int i = 0; i < portaChave->keyHolder->lines; i++) {
+                for (int j = 0; *(*(portaChave->keyHolder->matrix_kpriv_char + j) + i) != '\0'; ++j) {
+                    char matrix_aux = *(*(portaChave->keyHolder->matrix_kpriv_char + j) + i);
+                    fwrite(&matrix_aux, sizeof(char), 1, fileInfo);
+                    fwrite(" ", sizeof(char), 1, fileInfo);
+                }
+                fwrite("\n", sizeof(char), 1, fileInfo);
+            }
+            int size_name12 = strlen(name12) + 1;
+            fwrite(&name12, sizeof(char), size_name12, fileInfo);
+            fwrite("\n", sizeof(char), 1, fileInfo);
+            for (int i = 0; i < portaChave->keyHolder->lines; i++) {
+                for (int j = 0; *(*(portaChave->keyHolder->matrix_kcod_char + j) + i) != '\0'; ++j) {
+                    char matrix_aux = *(*(portaChave->keyHolder->matrix_kcod_char + j) + i);
+                    fwrite(&matrix_aux, sizeof(char), 1, fileInfo);
+                    fwrite(" ", sizeof(char), 1, fileInfo);
+                }
+                fwrite("\n", sizeof(char), 1, fileInfo);
+            }
+            portaChave = portaChave->pdown;
+        }
         utilizador = utilizador->pdown;
     }
 }
