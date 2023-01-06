@@ -9,7 +9,7 @@
 int main_project(int argc, const char *argv[]) {
 
     /**--------------------------------------------------------------------------------------------------------------**/
-    //int lines = 8;
+    //int lines = 4;
 
     //char file_INFO_TXT_INT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\INFO_TXT_INT.txt";
     //char file_LOAD_TXT_INT[] = "C:\\Users\\tiago\\CLionProjects\\LP1_AED1_2023\\KEYS_INT.txt";
@@ -20,6 +20,10 @@ int main_project(int argc, const char *argv[]) {
 
     //bulk_populate_public_keys_int(matrix_pubs_int, lines);
     //bulk_compute_private_keys_int(matrix_pubs_int, matrix_priv_int, lines);
+
+
+    //unsigned long long key1 = private_key_from_runlength_char(15132);
+    //printf("%llu",key1);
     //bulk_compute_runlengths_int(matrix_priv_int, matrix_rle_int, lines);
 
     //delete_key_int(matrix_pubs_int, matrix_priv_int, matrix_rle_int, lines, 335);
@@ -48,7 +52,7 @@ int main_project(int argc, const char *argv[]) {
     /**---------------------------------------------------------------------------------------------------------------*/
     return 0;
 }
-
+//desnecessário
 int lines_matriz(char filename[]){
     FILE *arquivoINFO = NULL;
     if ((arquivoINFO = fopen(filename, "r")) == NULL) {
@@ -225,6 +229,7 @@ unsigned long long private_key_from_runlength_int(unsigned long long runlengthke
             privtkey = concatenar_key(aux2, *(array + 3), privtkey);
             break;
         case 5:
+
             for (int i = 0; i < 2; i++) {
                 aux1 = aux1 * 10 + *(array + i);
                 aux2 = aux2 * 10 + *(array + i + 2);
@@ -237,7 +242,8 @@ unsigned long long private_key_from_runlength_int(unsigned long long runlengthke
                 aux2 = *(array + 3);
                 privtkey = concatenar_key(aux1, *(array + 2), privtkey);
                 privtkey = concatenar_key(aux2, *(array + 4), privtkey);
-            } else {
+            } else  {
+                aux1 = *(array + 0);
                 privtkey = concatenar_key(aux1, *(array + 1), privtkey);
                 privtkey = concatenar_key(aux2, *(array + 4), privtkey);
             }
@@ -247,7 +253,7 @@ unsigned long long private_key_from_runlength_int(unsigned long long runlengthke
                 aux1 = aux1 * 10 + *(array + i);
                 aux2 = aux2 * 10 + *(array + i + 3);
             }
-            if (aux1 + aux2 <= 20) {
+            if (aux1 + aux2 < 20) {
                 privtkey = concatenar_key(aux1, *(array + 2), privtkey);
                 privtkey = concatenar_key(aux2, *(array + 5), privtkey);
             }
@@ -257,10 +263,10 @@ unsigned long long private_key_from_runlength_int(unsigned long long runlengthke
     }
     return privtkey;
 }
-
+//escrever o numero x n vezes
 unsigned long long concatenar_key(int aux, short key, unsigned long long privtkey) {
     unsigned long long a = 1;
-
+    //caso a key seja zero vou imprimir o numero de vezes que elea se repete
     if (key == 0) {
         for (int i = 0; i < aux; i++) {
             a *= 10;
@@ -314,7 +320,7 @@ int exists_key_int(short **matrix, int lines, unsigned long long key) {
         for (n = 0; *(key_matrix + n) != -1; n++) {
             if (*(*(matrix + n) + i) == *(key_matrix + n)) {
                 count++;
-            } else {
+            } else {// se o primeiro elemento da linha não for igual ao primeiro elemento da key, passa para a próxima linha
                 count = 0;
                 break;
             }
@@ -326,11 +332,12 @@ int exists_key_int(short **matrix, int lines, unsigned long long key) {
     return 0;
 }
 
+//retornar a linha da matiz onde a key existe
 int find_key_int(short **matrix, int lines, unsigned long long key) {
     short *key_matrix = key_long_2_digits_int(key);
     int count = 0, n = 0;
 
-    for (int i = 1; i <= lines; i++) {
+    for (int i = 0; i < lines; i++) {
         for (n = 0; *(*(matrix + n) + i) != -1; n++) {
             if (*(*(matrix + n) + i) == *(key_matrix + n)) {
                 count++;
@@ -402,6 +409,7 @@ void bulk_populate_public_keys_int(short **matrix_kpub, int lines) {
     }
 }
 
+//passar linha de uma matrix para um array
 short *array_key(short **matrix, int i) {
     int n = 0;
     short *key = (short *) malloc(21 * sizeof(short));
@@ -458,7 +466,7 @@ search_private_keys_int(short **matrix_kpub, short **matrix_kpriv, int lines, un
     }
     return matrix_matching;
 }
-
+//colocar todos os elementos de uma matriz num array
 unsigned long long *array_key_v2(short **matrix, int *id, int lines) {
 
     unsigned long long *key = (unsigned long long *) malloc(lines * sizeof(unsigned long long));
@@ -472,11 +480,12 @@ unsigned long long *array_key_v2(short **matrix, int *id, int lines) {
     return key;
 }
 
+//colocar a matriz auxiliar organizada atraves da original
 void copy_matrix(short **matrix, short **aux, int lines, const int *id) {
     int n = 0;
     for (int k = 0; k < lines; k++) {
         for (n = 0; *(*(matrix + n) + *(id + k)) != -1; n++) {
-            *(*(aux + n) + k) = *(*(matrix + n) + *(id + k));
+            *(*(aux + n) + k) = *(*(matrix + n) + *(id + k));//*(id + k) incrementar os id, ou seja, a linha da matriz que quero copiar para a matiz auxiliar
         }
         *(*(aux + n) + k) = -1;
     }
@@ -486,12 +495,13 @@ void sort_matrix_int(short **matrix, int lines, int order) {
     int *id = (int *) malloc(lines * sizeof(int));
     unsigned long long *key = array_key_v2(matrix, id, lines);
     short **aux = alloc_matrix_int(lines, 21);
-    mergeSort(key, id, 0, lines - 1, order);
+    mergeSort(key, id, 0, lines - 1, order);//organiza o array auxiliar e por sua vez os id's também
     int n = 0;
+    //armazenar a matriz original numa matriz auxiliar
     for (int i = 0; i < lines; i++) {
         copy_matrix(matrix, aux, lines, id);
     }
-
+    //organiza a matriz original atraves da auxiliar
     for (int i = 0; i < lines; i++) {
         for (n = 0; *(*(aux + n) + i) != -1; n++) {
             *(*(matrix + n) + i) = *(*(aux + n) + i);
@@ -515,7 +525,7 @@ void merge(unsigned long long *key, int *id, int mid, int low, int high, int ord
     k = low;
     if (order == 1) {
         while (i <= mid && j <= high) {
-            if (*(key + i) < *(key + j)) {
+            if (*(key + i) < *(key + j)) {//ascendente
                 B[k] = *(key + i);
                 A[k] = *(id + i);
                 i++;
@@ -543,7 +553,7 @@ void merge(unsigned long long *key, int *id, int mid, int low, int high, int ord
             *(key + i) = B[i];
             *(id + i) = A[i];
         }
-    } else {
+    } else {//descendente
         while (i <= mid && j <= high) {
             if (*(key + i) > *(key + j)) {
                 B[k] = *(key + i);
